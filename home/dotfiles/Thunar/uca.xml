@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1791704983883985-1</unique-id>
+	<command>/home/oni/.local/bin/thunar-open-terminal.sh %f</command>
+	<description>Open terminal in current or selected directory</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon>accessories-text-editor</icon>
+	<name>Open in Micro</name>
+	<submenu></submenu>
+	<unique-id>1791704983883985-2</unique-id>
+	<command>kitty --class micro-terminal --title "Micro Editor" -e micro %F</command>
+	<description>Open file in Micro text editor</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+</actions>

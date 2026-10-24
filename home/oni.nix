@@ -47,4 +47,27 @@
 
   # Starship prompt configuration
   xdg.configFile."starship.toml".source = ./dotfiles/starship.toml;
+
+  # Теми GTK 3/4, закладки та контекстні дії Thunar (без важкого модуля gtk)
+  xdg.configFile."gtk-3.0/settings.ini".source = ./dotfiles/gtk-3.0/settings.ini;
+  xdg.configFile."gtk-3.0/bookmarks".source = ./dotfiles/gtk-3.0/bookmarks;
+  xdg.configFile."gtk-4.0/settings.ini".source = ./dotfiles/gtk-4.0/settings.ini;
+  xdg.configFile."Thunar/uca.xml".source = ./dotfiles/Thunar/uca.xml;
+  xdg.configFile."xfce4/xfconf/xfce-perchannel-xml/xsettings.xml".source = ./dotfiles/xfce4/xsettings.xml;
+
+  # Допоміжний скрипт Thunar "Open Terminal Here"
+  home.file.".local/bin/thunar-open-terminal.sh" = {
+    source = ./dotfiles/bin/thunar-open-terminal.sh;
+    executable = true;
+  };
+
+  # Схема dconf для темного режиму, іконок Papirus-Dark та курсора Bibata
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = "Adwaita-dark";
+      icon-theme = "Papirus-Dark";
+      cursor-theme = "Bibata-Modern-Ice";
+    };
+  };
 }
