@@ -38,22 +38,27 @@
   xdg.configFile."kitty/launch-actions.conf".source = ./dotfiles/kitty/launch-actions.conf;
   xdg.configFile."kitty/open-actions.conf".source = ./dotfiles/kitty/open-actions.conf;
 
-  # Wlogout
+  # Wlogout & Hyprlock & Swappy
   xdg.configFile."wlogout/layout".source = ./dotfiles/wlogout/layout;
   xdg.configFile."wlogout/style.css".source = ./dotfiles/wlogout/style.css;
+  xdg.configFile."hypr/hyprlock.conf".source = ./dotfiles/hypr/hyprlock.conf;
+  xdg.configFile."hypr/colors.conf".source = ./dotfiles/hypr/colors.conf;
+  xdg.configFile."swappy/config".source = ./dotfiles/swappy/config;
 
-  # Micro editor bindings
+  # Micro editor bindings & Desktop launcher
   xdg.configFile."micro/bindings.json".source = ./dotfiles/micro/bindings.json;
+  xdg.dataFile."applications/micro.desktop".source = ./dotfiles/applications/micro.desktop;
 
   # Starship prompt configuration
   xdg.configFile."starship.toml".source = ./dotfiles/starship.toml;
 
-  # Теми GTK 3/4, закладки та контекстні дії Thunar (без важкого модуля gtk)
+  # Теми GTK 3/4, закладки, курсор за замовчуванням та дії Thunar
   xdg.configFile."gtk-3.0/settings.ini".source = ./dotfiles/gtk-3.0/settings.ini;
   xdg.configFile."gtk-3.0/bookmarks".source = ./dotfiles/gtk-3.0/bookmarks;
   xdg.configFile."gtk-4.0/settings.ini".source = ./dotfiles/gtk-4.0/settings.ini;
   xdg.configFile."Thunar/uca.xml".source = ./dotfiles/Thunar/uca.xml;
   xdg.configFile."xfce4/xfconf/xfce-perchannel-xml/xsettings.xml".source = ./dotfiles/xfce4/xsettings.xml;
+  home.file.".icons/default/index.theme".source = ./dotfiles/icons/index.theme;
 
   # Допоміжний скрипт Thunar "Open Terminal Here"
   home.file.".local/bin/thunar-open-terminal.sh" = {

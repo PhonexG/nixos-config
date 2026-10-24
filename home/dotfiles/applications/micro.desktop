@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=Micro
+GenericName=Text Editor
+Comment=Terminal Text Editor
+Icon=utilities-terminal
+Type=Application
+Categories=Utility;TextEditor;Development;
+Keywords=text;editor;syntax;terminal;
+Exec=kitty --class micro-terminal --title "Micro Editor" -e micro %F
+StartupNotify=false
+Terminal=false
+MimeType=text/plain;text/markdown;text/x-nix;text/x-shellscript;application/x-shellscript;text/x-python;text/x-c;text/x-c++;text/x-rust;text/x-yaml;text/x-toml;application/json;application/xml;text/html;text/css;text/x-sql;text/x-diff;text/x-makefile;text/x-cmake;text/csv;application/javascript;text/javascript;text/x-ini;text/x-log;
