@@ -1,0 +1,24 @@
+* {
+  background-image: none;
+  font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono", "Symbols Nerd Font", "Noto Color Emoji", sans-serif;
+  font-size: 16px;
+}
+
+window {
+  background-color: rgba(17, 17, 27, 0.35);
+}
+
+button {
+  color: #cdd6f4;
+  background-color: rgba(30, 30, 46, 0.82);
+  border: 2px solid rgba(137, 180, 250, 0.55);
+  border-radius: 24px;
+  margin: 18px;
+  padding: 18px;
+}
+
+button:focus,
+button:hover {
+  background-color: rgba(137, 180, 250, 0.85);
+  color: #11111b;
+}

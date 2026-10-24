@@ -1,0 +1,63 @@
+@import "colors.css";
+
+* {
+  font-family: "JetBrainsMono Nerd Font", "Iosevka Nerd Font", sans-serif;
+  font-size: 13px;
+}
+
+.control-center {
+  background: @bg_alpha;
+  border: 1px solid alpha(@accent, 0.42);
+  border-radius: 24px;
+  padding: 14px;
+}
+
+.notification-row {
+  outline: none;
+}
+
+.notification {
+  background: @surface_alpha;
+  border: 1px solid alpha(@accent2, 0.32);
+  border-radius: 18px;
+  padding: 12px;
+  margin: 7px 0;
+}
+
+.notification-content {
+  color: @text;
+}
+
+.summary {
+  color: @text;
+  font-weight: 700;
+}
+
+.time {
+  color: @muted;
+}
+
+.body {
+  color: @text;
+}
+
+.close-button {
+  background: @danger;
+  color: @bg;
+  border-radius: 999px;
+}
+
+.widget-title,
+.widget-dnd {
+  color: @text;
+  background: @surface_alpha;
+  border-radius: 18px;
+  padding: 10px 12px;
+  margin: 6px 0;
+}
+
+.widget-title button,
+.widget-dnd switch {
+  background: alpha(@accent, 0.20);
+  border-radius: 999px;
+}

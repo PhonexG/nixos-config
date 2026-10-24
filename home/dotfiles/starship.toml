@@ -1,0 +1,45 @@
+add_newline = false
+format = """
+[](accent)[ ](bg:accent fg:bg)[](fg:accent bg:surface)[ $directory ](bg:surface fg:text)[](fg:surface bg:surface2)$git_branch$git_status[](fg:surface2) $character"""
+right_format = "$cmd_duration$status"
+
+palette = "celeste"
+
+[palettes.celeste]
+bg = "#1e1e2e"
+surface = "#313244"
+surface2 = "#45475a"
+text = "#cdd6f4"
+accent = "#89b4fa"
+accent2 = "#cba6f7"
+danger = "#f38ba8"
+
+[directory]
+style = "bg:surface fg:text"
+format = "[$path]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+home_symbol = " ~"
+
+[git_branch]
+style = "bg:surface2 fg:accent2"
+format = "[ $symbol$branch ]($style)"
+symbol = " "
+
+[git_status]
+style = "bg:surface2 fg:text"
+format = "[$all_status$ahead_behind ]($style)"
+
+[character]
+success_symbol = "[❯](bold accent)"
+error_symbol = "[❯](bold danger)"
+
+[cmd_duration]
+min_time = 1000
+format = "[󰔛 $duration]($style) "
+style = "fg:accent"
+
+[status]
+disabled = false
+format = "[✘ $status]($style) "
+style = "fg:danger"

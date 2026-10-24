@@ -1,0 +1,12 @@
+show=drun
+width=720
+height=500
+location=center
+allow_images=true
+insensitive=true
+prompt=Search
+term=kitty
+hide_scroll=true
+matching=fuzzy
+key_expand=Tab
+close_on_focus_loss=true
