@@ -21,9 +21,9 @@
   # Дефолтні шпалери як fallback (без блокування всієї папки wallpapers)
   xdg.configFile."niri/wallpapers/default.png".source = ./dotfiles/niri/default.png;
 
-  # Waybar (тільки статичні конфіги, colors.css генерується динамічно)
-  xdg.configFile."waybar/config.jsonc".source = ./dotfiles/waybar/config.jsonc;
-  xdg.configFile."waybar/style.css".source = ./dotfiles/waybar/style.css;
+  # Ironbar (тільки статичні конфіги, colors.css генерується динамічно)
+  xdg.configFile."ironbar/config.json".source = ./dotfiles/ironbar/config.json;
+  xdg.configFile."ironbar/style.css".source = ./dotfiles/ironbar/style.css;
 
   # SwayNC
   xdg.configFile."swaync/config.json".source = ./dotfiles/swaync/config.json;

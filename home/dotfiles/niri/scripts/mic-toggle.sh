@@ -12,4 +12,3 @@ else
   wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 1
   notify-send "Microphone" "Muted" -t 900 || true
 fi
-pkill -RTMIN+8 waybar >/dev/null 2>&1 || true

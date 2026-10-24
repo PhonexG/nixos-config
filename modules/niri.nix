@@ -27,7 +27,7 @@
   # System packages required for Niri desktop environment
   environment.systemPackages = with pkgs; [
     xwayland-satellite
-    waybar
+    ironbar
     wofi
     swaynotificationcenter
     kitty

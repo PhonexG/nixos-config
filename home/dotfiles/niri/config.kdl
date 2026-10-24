@@ -79,7 +79,7 @@ layout {
 }
 
 // Автозапуск ваших сервісів
-spawn-at-startup "waybar"
+spawn-at-startup "ironbar"
 spawn-at-startup "swaync"
 // spawn-at-startup "xwayland-satellite"
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
@@ -138,7 +138,7 @@ binds {
     Mod+F { fullscreen-window; }
     Mod+Space { toggle-window-floating; }
     
-    Mod+Ctrl+Alt+B { spawn-sh "pkill -SIGUSR1 waybar"; }
+    Mod+Ctrl+Alt+B { spawn-sh "ironbar bar main toggle-visible"; }
     Ctrl+Alt+P { spawn "~/.config/niri/scripts/menu-control.sh" "power"; }
     Mod+X { spawn "~/.config/niri/scripts/menu-control.sh" "power"; }
     Mod+Alt+L { spawn "~/.config/niri/scripts/lock.sh"; }

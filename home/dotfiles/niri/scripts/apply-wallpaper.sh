@@ -8,12 +8,12 @@ CACHE_DIR="$HOME/.cache/niri"
 CURRENT_WALL="$WALL_DIR/current"
 SELECTED_PREFIX="$WALL_DIR/selected-wallpaper"
 DEFAULT_WALL="$WALL_DIR/default.png"
-WAYBAR_DIR="$HOME/.config/waybar"
+IRONBAR_DIR="$HOME/.config/ironbar"
 KITTY_DIR="$HOME/.config/kitty"
 SWAYNC_DIR="$HOME/.config/swaync"
 WOFI_DIR="$HOME/.config/wofi"
 
-mkdir -p "$CACHE_DIR" "$WALL_DIR" "$WAYBAR_DIR" "$KITTY_DIR" "$SWAYNC_DIR" "$WOFI_DIR"
+mkdir -p "$CACHE_DIR" "$WALL_DIR" "$IRONBAR_DIR" "$KITTY_DIR" "$SWAYNC_DIR" "$WOFI_DIR"
 
 if [[ -n "$INPUT_WALL" ]]; then
   # Expand tilde and get absolute path
@@ -66,12 +66,12 @@ else
 fi
 
 if command -v python3 >/dev/null 2>&1; then
-  python3 - "$MATUGEN_JSON" "$WAYBAR_DIR" "$KITTY_DIR" "$SWAYNC_DIR" "$WOFI_DIR" <<'PY'
+  python3 - "$MATUGEN_JSON" "$IRONBAR_DIR" "$KITTY_DIR" "$SWAYNC_DIR" "$WOFI_DIR" <<'PY'
 from pathlib import Path
 import json, sys
 
 json_path = Path(sys.argv[1])
-waybar_dir, kitty_dir, swaync_dir, wofi_dir = map(Path, sys.argv[2:])
+ironbar_dir, kitty_dir, swaync_dir, wofi_dir = map(Path, sys.argv[2:])
 fallback = {
     "background":"#1e1e2e","surface":"#313244","surface_variant":"#45475a",
     "on_surface":"#cdd6f4","outline":"#6c7086","primary":"#89b4fa",
@@ -99,7 +99,7 @@ def safe_write(p, data):
         pass
     p.write_text(data)
 
-safe_write(waybar_dir/'colors.css', f'''@define-color bg {bg};\n@define-color bg_alpha {rgb(bg,'0.72')};\n@define-color surface {surface};\n@define-color surface_alpha {rgb(surface,'0.72')};\n@define-color text {text};\n@define-color muted {muted};\n@define-color accent {accent};\n@define-color accent2 {accent2};\n@define-color danger {danger};\n@define-color success #a6e3a1;\n''')
+safe_write(ironbar_dir/'colors.css', f'''@define-color bg {bg};\n@define-color bg_alpha {rgb(bg,'0.72')};\n@define-color surface {surface};\n@define-color surface_alpha {rgb(surface,'0.72')};\n@define-color text {text};\n@define-color muted {muted};\n@define-color accent {accent};\n@define-color accent2 {accent2};\n@define-color danger {danger};\n@define-color success #a6e3a1;\n''')
 safe_write(kitty_dir/'current-theme.conf', f'''foreground {text}\nbackground {bg}\nselection_foreground {bg}\nselection_background {accent}\ncursor {accent2}\ncursor_text_color {bg}\ncolor0 {surface2}\ncolor1 {danger}\ncolor2 {tertiary}\ncolor3 #f9e2af\ncolor4 {accent}\ncolor5 {accent2}\ncolor6 {tertiary}\ncolor7 {text}\ncolor8 {muted}\ncolor9 {danger}\ncolor10 {tertiary}\ncolor11 #f9e2af\ncolor12 {accent}\ncolor13 {accent2}\ncolor14 {tertiary}\ncolor15 {text}\n''')
 for d in (swaync_dir,):
     safe_write(d/'colors.css', f'''@define-color bg {bg};\n@define-color bg_alpha {rgb(bg,'0.74')};\n@define-color surface {surface};\n@define-color surface_alpha {rgb(surface,'0.78')};\n@define-color text {text};\n@define-color muted {muted};\n@define-color accent {accent};\n@define-color accent2 {accent2};\n@define-color danger {danger};\n@define-color success #a6e3a1;\n''')
@@ -107,6 +107,6 @@ safe_write(wofi_dir/'colors.css', f'''@define-color bg {rgb(bg,'0.84')};\n@defin
 PY
 fi
 
-pkill -SIGUSR2 waybar >/dev/null 2>&1 || true
+ironbar reload >/dev/null 2>&1 || true
 swaync-client -R >/dev/null 2>&1 || true
 swaync-client -rs >/dev/null 2>&1 || true
