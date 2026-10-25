@@ -10,6 +10,10 @@
       set -gx VISUAL micro
       set -gx TERMINAL kitty
 
+      set -gx SSL_CERT_FILE /etc/ssl/certs/ca-bundle.crt
+      set -gx SSL_CERT_DIR /etc/ssl/certs
+      set -gx NIX_SSL_CERT_FILE /etc/ssl/certs/ca-bundle.crt
+
       fish_add_path $HOME/.local/bin
 
       set -g fish_color_autosuggestion brblack

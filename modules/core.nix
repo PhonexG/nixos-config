@@ -112,6 +112,11 @@ in
 
     XCURSOR_SIZE = "24";
     _JAVA_AWT_WM_NONREPARENTING = "1";
+
+    # SSL сертифікати для generic/manylinux бінарників під nix-ld (Zed ACP агенти, сторонній Python, Node.js)
+    SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+    SSL_CERT_DIR = "/etc/ssl/certs";
+    NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
   };
 
   # Шрифти
