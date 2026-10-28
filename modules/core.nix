@@ -22,14 +22,6 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.configurationLimit = 5;
-  
-  # Додатковий пункт для Chimera Linux
-  boot.loader.systemd-boot.extraEntries = {
-      "chimera.conf" = ''
-        title Chimera Linux
-        efi /EFI/chimera/grubx64.efi
-      '';
-    };
 
   # Оптимізація та налаштування Nix
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

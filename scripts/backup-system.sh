@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# NixOS + Home Manager Minimal & Essential Backup Generator
-# Backs up ONLY:
-#   1. /etc/nixos (System modules + Home Manager dotfiles & Niri scripts)
-#   2. ~/.config/rclone (rclone.conf, rclone-autofix.sh, filters)
-#   3. ~/.config/zed (settings.json, keymap.json, tasks.json, themes)
-#   4. ~/.local/bin (custom helper scripts, excluding heavy binaries)
-#   5. ~/.gemini/antigravity-acp (essential settings)
-# Dynamically generates deploy.sh inside the archive.
+# NixOS + Home Manager Portable Backup Generator
+# Backs up:
+#   1. /etc/nixos (Complete declarative system & Home Manager config)
+#   2. ~/.config/zed (Zed editor: settings, keymap, tasks, themes)
+#   3. ~/.config/rclone (rclone.conf with credentials/tokens)
+#   4. ~/.gitconfig & ~/.ssh (Git identity & SSH keys with permissions)
+#   5. ~/.gemini/antigravity-acp (Assistant settings)
+# Dynamically generates a self-contained deploy.sh inside the archive.
 # ==============================================================================
 set -euo pipefail
 
@@ -44,7 +44,7 @@ safe_rsync() {
 }
 
 echo "=================================================================="
-echo " Preparing NixOS + Home Manager backup: ${BACKUP_NAME}"
+echo " Preparing portable NixOS backup: ${BACKUP_NAME}"
 echo " Destination: ${ARCHIVE_FILE}"
 echo "=================================================================="
 
@@ -52,9 +52,9 @@ rm -rf "$WORK_DIR"
 mkdir -p "$WORK_DIR" "$OUTPUT_DIR"
 
 # ------------------------------------------------------------------------------
-# 1. NixOS + Home Manager Configuration (/etc/nixos)
+# 1. NixOS System & Home Manager Configuration (/etc/nixos)
 # ------------------------------------------------------------------------------
-echo "-> [1/5] Collecting /etc/nixos (NixOS modules + Home Manager dotfiles)..."
+echo "-> [1/6] Collecting /etc/nixos..."
 mkdir -p "$WORK_DIR/nixos"
 if [ -d "/etc/nixos" ]; then
     safe_rsync -a \
@@ -65,49 +65,49 @@ if [ -d "/etc/nixos" ]; then
 fi
 
 # ------------------------------------------------------------------------------
-# 2. Rclone Configuration & Self-Healing Scripts (~/.config/rclone)
+# 2. Zed Editor Configuration (~/.config/zed)
 # ------------------------------------------------------------------------------
-echo "-> [2/5] Collecting Rclone configuration (~/.config/rclone)..."
-if [ -d "$HOME/.config/rclone" ]; then
-    mkdir -p "$WORK_DIR/config/rclone"
-    safe_rsync -a \
-        --exclude='*.tmp' \
-        --exclude='*.bak*' \
-        --exclude='*.log' \
-        "$HOME/.config/rclone/" "$WORK_DIR/config/rclone/"
-fi
-
-# ------------------------------------------------------------------------------
-# 3. Zed Editor Settings (~/.config/zed)
-# ------------------------------------------------------------------------------
-echo "-> [3/5] Collecting Zed configuration (~/.config/zed)..."
+echo "-> [2/6] Collecting Zed editor configuration (~/.config/zed)..."
 if [ -d "$HOME/.config/zed" ]; then
     mkdir -p "$WORK_DIR/config/zed"
     safe_rsync -a \
         --exclude='*.bak*' \
         --exclude='*.tmp' \
         --exclude='*.log' \
+        --exclude='*.sock' \
         --exclude='conversations' \
         --exclude='prompts' \
         "$HOME/.config/zed/" "$WORK_DIR/config/zed/"
 fi
 
 # ------------------------------------------------------------------------------
-# 4. Essential User Helper Scripts (~/.local/bin) & Antigravity Settings
+# 3. Rclone Credentials (~/.config/rclone/rclone.conf)
 # ------------------------------------------------------------------------------
-echo "-> [4/5] Collecting lightweight user scripts & Antigravity settings..."
-if [ -d "$HOME/.local/bin" ]; then
-    mkdir -p "$WORK_DIR/local_bin"
-    safe_rsync -a --copy-unsafe-links \
-        --exclude='backup-system.sh' \
-        --exclude='deploy.sh' \
-        --exclude='agy*' \
-        --exclude='zed' \
-        --exclude='__pycache__' \
-        --max-size='5m' \
-        "$HOME/.local/bin/" "$WORK_DIR/local_bin/"
+echo "-> [3/6] Collecting Rclone session/tokens..."
+if [ -f "$HOME/.config/rclone/rclone.conf" ]; then
+    mkdir -p "$WORK_DIR/config/rclone"
+    cp -a "$HOME/.config/rclone/rclone.conf" "$WORK_DIR/config/rclone/"
 fi
 
+# ------------------------------------------------------------------------------
+# 4. Git Identity & SSH Keys
+# ------------------------------------------------------------------------------
+echo "-> [4/6] Collecting Git config & SSH keys..."
+if [ -f "$HOME/.gitconfig" ]; then
+    cp -a "$HOME/.gitconfig" "$WORK_DIR/gitconfig"
+fi
+
+if [ -d "$HOME/.ssh" ]; then
+    mkdir -p "$WORK_DIR/ssh"
+    safe_rsync -a \
+        --exclude='known_hosts.old' \
+        "$HOME/.ssh/" "$WORK_DIR/ssh/"
+fi
+
+# ------------------------------------------------------------------------------
+# 5. Antigravity Settings
+# ------------------------------------------------------------------------------
+echo "-> [5/6] Collecting Antigravity settings..."
 if [ -d "$HOME/.gemini/antigravity-acp" ]; then
     mkdir -p "$WORK_DIR/gemini/antigravity-acp"
     [ -f "$HOME/.gemini/antigravity-acp/settings.json" ] && \
@@ -117,67 +117,88 @@ if [ -d "$HOME/.gemini/antigravity-acp" ]; then
 fi
 
 # ------------------------------------------------------------------------------
-# 5. Generate deploy.sh Dynamically
+# 6. Generate deploy.sh Dynamically
 # ------------------------------------------------------------------------------
-echo "-> [5/5] Generating deploy.sh inside archive..."
+echo "-> [6/6] Generating portable deploy.sh inside archive..."
 cat << 'DEPLOY_EOF' > "$WORK_DIR/deploy.sh"
 #!/usr/bin/env bash
 # ==============================================================================
-# NixOS + Home Manager Auto-Deploy Script
-# Restores /etc/nixos, Rclone, Zed, and helper scripts.
+# NixOS Auto-Deploy & Restore Script
+# Restores /etc/nixos, Zed config, Rclone credentials, Git identity, and SSH keys.
 # ==============================================================================
 set -euo pipefail
 
 BACKUP_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TARGET_USER="${SUDO_USER:-$USER}"
+TARGET_HOME="${HOME}"
 
 echo "=================================================================="
-echo " Restoring system from: $BACKUP_ROOT"
+echo " Restoring NixOS system configuration from: $BACKUP_ROOT"
+echo " Target user: $TARGET_USER ($TARGET_HOME)"
 echo "=================================================================="
 
-# 1. Restore Rclone & Zed configs into ~/.config
-if [ -d "$BACKUP_ROOT/config" ]; then
-    echo "-> [1/4] Restoring Rclone & Zed into ~/.config/ ..."
-    mkdir -p "$HOME/.config"
-    cp -a "$BACKUP_ROOT/config/." "$HOME/.config/"
-    chmod 600 "$HOME/.config/rclone/rclone.conf" 2>/dev/null || true
-    chmod +x "$HOME/.config/rclone/rclone-autofix.sh" 2>/dev/null || true
+# 1. Restore Zed Editor configuration
+if [ -d "$BACKUP_ROOT/config/zed" ]; then
+    echo "-> Restoring Zed configuration into ~/.config/zed/ ..."
+    mkdir -p "$TARGET_HOME/.config/zed"
+    cp -a "$BACKUP_ROOT/config/zed/." "$TARGET_HOME/.config/zed/"
 fi
 
-# 2. Restore ~/.local/bin helper scripts
-mkdir -p "$HOME/.local/bin"
-if [ -d "$BACKUP_ROOT/local_bin" ]; then
-    echo "-> [2/4] Restoring helper scripts into ~/.local/bin/ ..."
-    cp -a "$BACKUP_ROOT/local_bin/." "$HOME/.local/bin/"
+# 2. Restore Rclone credentials
+if [ -f "$BACKUP_ROOT/config/rclone/rclone.conf" ]; then
+    echo "-> Restoring Rclone tokens into ~/.config/rclone/rclone.conf ..."
+    mkdir -p "$TARGET_HOME/.config/rclone"
+    cp -a "$BACKUP_ROOT/config/rclone/rclone.conf" "$TARGET_HOME/.config/rclone/rclone.conf"
+    chmod 600 "$TARGET_HOME/.config/rclone/rclone.conf"
 fi
-[ -f "$BACKUP_ROOT/backup-system.sh" ] && cp -a "$BACKUP_ROOT/backup-system.sh" "$HOME/.local/bin/"
-chmod +x "$HOME/.local/bin"/*.sh 2>/dev/null || true
 
-# 3. Restore Antigravity ACP settings
+# 3. Restore Git config
+if [ -f "$BACKUP_ROOT/gitconfig" ]; then
+    echo "-> Restoring ~/.gitconfig ..."
+    cp -a "$BACKUP_ROOT/gitconfig" "$TARGET_HOME/.gitconfig"
+fi
+
+# 4. Restore SSH keys with secure permissions
+if [ -d "$BACKUP_ROOT/ssh" ]; then
+    echo "-> Restoring SSH keys into ~/.ssh/ ..."
+    mkdir -p "$TARGET_HOME/.ssh"
+    chmod 700 "$TARGET_HOME/.ssh"
+    cp -a "$BACKUP_ROOT/ssh/." "$TARGET_HOME/.ssh/"
+    find "$TARGET_HOME/.ssh" -type f -name 'id_*' ! -name '*.pub' -exec chmod 600 {} + 2>/dev/null || true
+    find "$TARGET_HOME/.ssh" -type f -name '*.pub' -exec chmod 644 {} + 2>/dev/null || true
+fi
+
+# 5. Restore Antigravity ACP settings
 if [ -d "$BACKUP_ROOT/gemini" ]; then
-    echo "-> [3/4] Restoring Antigravity settings into ~/.gemini/ ..."
-    mkdir -p "$HOME/.gemini"
-    cp -a "$BACKUP_ROOT/gemini/." "$HOME/.gemini/"
+    echo "-> Restoring Antigravity settings into ~/.gemini/ ..."
+    mkdir -p "$TARGET_HOME/.gemini"
+    cp -a "$BACKUP_ROOT/gemini/." "$TARGET_HOME/.gemini/"
 fi
 
-# 4. Restore /etc/nixos (NixOS + Home Manager)
+# 6. Restore /etc/nixos
 if [ -d "$BACKUP_ROOT/nixos" ]; then
-    echo "-> [4/4] Restoring /etc/nixos (requires sudo)..."
+    echo "-> Restoring /etc/nixos (requires sudo)..."
     sudo mkdir -p /etc/nixos
     sudo cp -a "$BACKUP_ROOT/nixos/." /etc/nixos/
     sudo chown -R "${TARGET_USER}:users" /etc/nixos
+
+    # Check if deployed on new hardware
+    if [ ! -f /etc/nixos/hardware-configuration.nix ] || [ "${NEW_HARDWARE:-0}" = "1" ]; then
+        echo "-> Generating new hardware-configuration.nix for this device..."
+        sudo nixos-generate-config --show-hardware-config > /tmp/hw-config.nix
+        sudo mv /tmp/hw-config.nix /etc/nixos/hardware-configuration.nix
+    fi
 fi
 
 echo ""
 echo "=================================================================="
-echo " Restore complete! Applying NixOS + Home Manager configuration:"
+echo " Restore completed successfully!"
+echo " To apply the system configuration now, run:"
 echo "   sudo nixos-rebuild switch --flake /etc/nixos#nixos"
 echo "=================================================================="
 DEPLOY_EOF
 
 chmod +x "$WORK_DIR/deploy.sh"
-cp "${BASH_SOURCE[0]}" "$WORK_DIR/backup-system.sh"
-chmod +x "$WORK_DIR/backup-system.sh"
 
 # ------------------------------------------------------------------------------
 # Compress into ZIP Archive
@@ -192,7 +213,7 @@ fi
 rm -rf "$WORK_DIR"
 
 echo "=================================================================="
-echo " Clean backup created successfully!"
+echo " Portable backup created successfully!"
 echo " File: ${ARCHIVE_FILE}"
 echo " Size: $(du -h "${ARCHIVE_FILE}" | cut -f1)"
 echo "=================================================================="
