@@ -145,11 +145,11 @@ binds {
     Mod+W { spawn "~/.config/niri/scripts/menu-control.sh" "wallpaper"; }
     Mod+B { spawn "zen-beta"; }
     Mod+N { spawn "swaync-client" "-t"; }
-    Mod+C { spawn "~/.config/niri/scripts/clipboard-picker.sh"; }
+    Mod+C { spawn "~/.config/niri/scripts/menu-control.sh" "clipboard"; }
     
 	Mod+Ctrl+M { spawn "sudo" "toggle-eco"; }
 
-    XF86AudioMicMute { spawn "~/.config/niri/scripts/mic-toggle.sh"; }
+    XF86AudioMicMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
     Mod+Shift+R { spawn "~/.config/niri/scripts/reload-session.sh"; }
 
     Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }

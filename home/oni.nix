@@ -24,6 +24,22 @@
   # Ironbar (тільки статичні конфіги, colors.css генерується динамічно)
   xdg.configFile."ironbar/config.json".source = ./dotfiles/ironbar/config.json;
   xdg.configFile."ironbar/style.css".source = ./dotfiles/ironbar/style.css;
+  xdg.configFile."ironbar/wifi-status.sh" = {
+    source = ./dotfiles/ironbar/wifi-status.sh;
+    executable = true;
+  };
+  xdg.configFile."ironbar/speaker-status.sh" = {
+    source = ./dotfiles/ironbar/speaker-status.sh;
+    executable = true;
+  };
+  xdg.configFile."ironbar/mic-status.sh" = {
+    source = ./dotfiles/ironbar/mic-status.sh;
+    executable = true;
+  };
+  xdg.configFile."ironbar/battery-status.sh" = {
+    source = ./dotfiles/ironbar/battery-status.sh;
+    executable = true;
+  };
 
   # SwayNC
   xdg.configFile."swaync/config.json".source = ./dotfiles/swaync/config.json;
@@ -60,9 +76,16 @@
   xdg.configFile."xfce4/xfconf/xfce-perchannel-xml/xsettings.xml".source = ./dotfiles/xfce4/xsettings.xml;
   home.file.".icons/default/index.theme".source = ./dotfiles/icons/index.theme;
 
-  # Допоміжний скрипт Thunar "Open Terminal Here"
-  home.file.".local/bin/thunar-open-terminal.sh" = {
-    source = ./dotfiles/bin/thunar-open-terminal.sh;
+  # Rclone bisync filters & autofix script
+  xdg.configFile."rclone/bisync-filters.txt".source = ./dotfiles/rclone/bisync-filters.txt;
+  xdg.configFile."rclone/rclone-autofix.sh" = {
+    source = ./dotfiles/rclone/rclone-autofix.sh;
+    executable = true;
+  };
+
+  # Утиліта резервного копіювання системи
+  home.file.".local/bin/backup-system.sh" = {
+    source = ../scripts/backup-system.sh;
     executable = true;
   };
 

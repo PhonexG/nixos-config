@@ -113,6 +113,7 @@ run_clipboard() {
 
   if [[ "$choice" == *"Очистити всю історію"* ]]; then
     cliphist wipe
+    rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/cliphist/db"
     wl-copy --clear
     notify-send "Clipboard" "Історію буфера очищено" || true
     exit 0

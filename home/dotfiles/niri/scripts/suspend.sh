@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-"$HOME/.config/niri/scripts/lock-detached.sh" || true
-sleep 0.25
+
+pgrep -x hyprlock >/dev/null 2>&1 || hyprlock &
 systemctl suspend

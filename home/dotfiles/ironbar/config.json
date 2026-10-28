@@ -1,101 +1,125 @@
 {
+  "$schema": "https://f.jstanger.dev/github/ironbar/schema.json",
   "name": "main",
   "position": "top",
-  "height": 34,
-  "start_hidden": true,
+  "anchor_to_edges": false,
+  "layer": "overlay",
+  "exclusive_zone": false,
+  "popup_gap": 38,
+  "height": 1,
   "margin": {
-    "top": 6,
+    "top": 0,
     "bottom": 0,
-    "left": 12,
-    "right": 12
+    "left": 0,
+    "right": 0
   },
-  "start": [
-    {
-      "type": "custom",
-      "class": "logo-box",
-      "bar": [
-        {
-          "type": "button",
-          "name": "logo-btn",
-          "class": "logo-btn",
-          "label": "",
-          "on_click": "!$HOME/.config/niri/scripts/menu-control.sh launcher"
-        }
-      ]
-    },
-    {
-      "type": "workspaces",
-      "all_monitors": false,
-      "sort": "name"
-    },
-    {
-      "type": "focused",
-      "show_icon": false,
-      "show_title": true,
-      "truncate": {
-        "mode": "end",
-        "max_length": 42
-      }
-    }
-  ],
   "center": [
     {
-      "type": "clock",
-      "format": "󰃰  %H:%M",
-      "format_popup": "%A, %d %B %Y"
-    }
-  ],
-  "end": [
-    {
-      "type": "tray",
-      "icon_size": 16
-    },
-    {
-      "type": "notifications",
-      "show_count": true
-    },
-    {
       "type": "custom",
-      "class": "clip-box",
+      "name": "dropdown",
+      "class": "dropdown-tab",
+      "on_mouse_enter": "ironbar style add-class dropdown open",
+      "on_mouse_exit": "ironbar style remove-class dropdown open",
       "bar": [
         {
-          "type": "button",
-          "name": "clip-btn",
-          "class": "clip-btn",
-          "label": "",
-          "on_click": "!$HOME/.config/niri/scripts/clipboard-picker.sh"
-        }
-      ]
-    },
-    {
-      "type": "network_manager",
-      "icon_size": 16
-    },
-    {
-      "type": "volume",
-      "format": "{icon} {percentage}%",
-      "icons": {
-        "volume_high": "󰕾",
-        "volume_medium": "󰖀",
-        "volume_low": "󰕿",
-        "muted": "󰝟"
-      }
-    },
-    {
-      "type": "battery",
-      "format": "{percentage}%",
-      "icon_size": 16
-    },
-    {
-      "type": "custom",
-      "class": "power-box",
-      "bar": [
-        {
-          "type": "button",
-          "name": "power-btn",
-          "class": "power-btn",
-          "label": "⏻",
-          "on_click": "!$HOME/.config/niri/scripts/menu-control.sh power"
+          "type": "box",
+          "name": "dropdown-box",
+          "class": "dropdown-box",
+          "widgets": [
+            {
+              "type": "sys_info",
+              "name": "cpu",
+              "class": "bar-pill item-cpu",
+              "format": ["  {cpu_percent}%"],
+              "interval": {
+                "cpu": 1
+              },
+              "on_mouse_enter": "ironbar style add-class dropdown open",
+              "on_click_left": "kitty -e btop"
+            },
+            {
+              "type": "custom",
+              "name": "wifi",
+              "class": "bar-pill item-wifi",
+              "on_mouse_enter": "ironbar style add-class dropdown open",
+              "bar": [
+                {
+                  "type": "button",
+                  "name": "wifi-btn",
+                  "class": "wifi-btn",
+                  "label": "{{watch:/home/oni/.config/ironbar/wifi-status.sh}}",
+                  "on_click": "!kitty -e nmtui"
+                }
+              ]
+            },
+            {
+              "type": "custom",
+              "name": "speaker",
+              "class": "bar-pill item-speaker",
+              "on_mouse_enter": "ironbar style add-class dropdown open",
+              "bar": [
+                {
+                  "type": "button",
+                  "name": "speaker-btn",
+                  "class": "speaker-btn",
+                  "label": "{{watch:/home/oni/.config/ironbar/speaker-status.sh}}",
+                  "on_click": "!pavucontrol"
+                }
+              ]
+            },
+            {
+              "type": "clock",
+              "name": "clock",
+              "class": "bar-pill item-clock",
+              "format": "  %H:%M",
+              "format_popup": "%A, %d %B %Y",
+              "on_mouse_enter": "ironbar style add-class dropdown open"
+            },
+            {
+              "type": "custom",
+              "name": "mic",
+              "class": "bar-pill item-mic",
+              "on_mouse_enter": "ironbar style add-class dropdown open",
+              "bar": [
+                {
+                  "type": "button",
+                  "name": "mic-btn",
+                  "class": "mic-btn",
+                  "label": "{{watch:/home/oni/.config/ironbar/mic-status.sh}}",
+                  "on_click": "!wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+                }
+              ]
+            },
+            {
+              "type": "bluetooth",
+              "name": "bluetooth",
+              "class": "bar-pill item-bt",
+              "icon_size": 15,
+              "disable_popup": true,
+              "on_mouse_enter": "ironbar style add-class dropdown open",
+              "on_click_left": "blueman-manager",
+              "format": {
+                "disabled": "󰂲  Off",
+                "enabled": "󰂯  On",
+                "connected": "󰂱  {device_alias}",
+                "connected_battery": "󰂱  {device_alias} {device_battery_percent}%"
+              }
+            },
+            {
+              "type": "custom",
+              "name": "battery",
+              "class": "bar-pill item-battery",
+              "on_mouse_enter": "ironbar style add-class dropdown open",
+              "bar": [
+                {
+                  "type": "label",
+                  "name": "battery-lbl",
+                  "class": "battery-lbl",
+                  "label": "{{watch:/home/oni/.config/ironbar/battery-status.sh}}"
+                }
+              ]
+            }
+          ]
         }
       ]
     }

@@ -1,0 +1,68 @@
+# Rclone bisync filters for Google Drive <-> ~/GDriveOffline
+
+# Системне та офісне сміття
+- **/.Trash/**
+- **/.DS_Store
+- **/Thumbs.db
+- **/desktop.ini
+- **/*.tmp
+- **/~$*
+
+# Конфліктні та блокувальні файли rclone
+- **/*.conflict*
+- **/*.lck
+
+# Системи контролю версій та IDE
+- **/.git/**
+- **/.idea/**
+- **/.vscode/**
+
+# Nix & direnv / оточення
+- **/.direnv/**
+- **/.devenv/**
+- **/result
+- **/result-*
+
+# .NET / C# / F# / VB (артефакти компіляції та бінарники)
+- **/bin/**
+- **/obj/**
+
+# Rust (Cargo)
+- **/target/**
+
+# Scala & Java (sbt, Metals, Bloop)
+- **/.metals/**
+- **/.bloop/**
+- **/.bsp/**
+- **/*.class
+
+# C / C++ (компіляція, бінарники, CMake)
+- **/cmake-build-*/**
+- **/build/**
+- **/*.o
+- **/*.so
+- **/*.dylib
+- **/*.dll
+- **/*.pdb
+- **/compile_commands.json
+
+# Python & оточення
+- **/.venv/**
+- **/env/**
+- **/__pycache__/**
+- **/*.pyc
+- **/.pytest_cache/**
+- **/.ruff_cache/**
+
+# Веб-залежності
+- **/node_modules/**
+
+# Кеші додатків, браузерів та розпаковані бекапи
+- **/system-backup_*/**
+- **/.cache/**
+- **/Cache/**
+- **/Code Cache/**
+- **/GPUCache/**
+- **/ShaderCache/**
+- **/IndexedDB/**
+- **/Service Worker/**

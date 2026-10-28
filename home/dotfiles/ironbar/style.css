@@ -1,133 +1,156 @@
-@import "colors.css";
+@define-color bg_dark #0a1120;
+@define-color bg_bar rgba(11, 18, 33, 0.94);
+
+@define-color border_glow rgba(96, 165, 250, 0.35);
+@define-color border_pill rgba(147, 197, 253, 0.16);
+
+@define-color blue_accent #60a5fa;
+@define-color blue_light #93c5fd;
+@define-color blue_cyan #38bdf8;
+@define-color blue_ice #e0f2fe;
+@define-color text_white #f8fafc;
 
 * {
-  border: none;
-  border-radius: 0;
-  font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono", "Symbols Nerd Font", "Iosevka Nerd Font", "Noto Color Emoji", sans-serif;
-  font-size: 13px;
-  min-height: 0;
-  box-shadow: none;
-  background-image: none;
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans Nerd Font", monospace, sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    border: none;
+    box-shadow: none;
+    background-image: none;
+    outline: none;
+    min-height: 0;
 }
 
+window,
 .background,
-#bar {
-  background-color: transparent;
-  color: @text;
+#bar,
+#bar #center {
+    background-color: transparent;
 }
 
-#bar #start,
-#bar #center,
-#bar #end {
-  background-color: @bg_alpha;
-  border: 1px solid alpha(@accent, 0.32);
-  border-radius: 16px;
-  padding: 3px 8px;
+/* Minimalist drop-down tab with smooth slide-down animation from top edge */
+.dropdown-tab {
+    background-color: @bg_bar;
+    border-left: 1px solid @border_glow;
+    border-right: 1px solid @border_glow;
+    border-bottom: 1px solid @border_glow;
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    padding: 3px 10px 4px 10px;
+    margin-top: -28px;
+    opacity: 0.01;
+    transition: margin-top 160ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease-out;
 }
 
-.widget {
-  margin: 0 2px;
+.dropdown-tab.open,
+.dropdown-tab:hover {
+    margin-top: 0px;
+    opacity: 1;
 }
 
-/* Custom buttons (Logo, Clipboard, Power) */
+/* Minimalist modules without hover background/border highlight */
+.bar-pill,
+.bar-pill:hover,
+.bar-pill:focus,
+.bar-pill:active,
+button,
+button:hover,
+button:focus,
+button:active {
+    background-color: transparent;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+    outline: none;
+}
+
+.bar-pill {
+    padding: 2px 7px;
+    margin: 0 1.5px;
+}
+
 button {
-  background-color: transparent;
-  color: @text;
-  padding: 0 8px;
-  border-radius: 12px;
-  transition: all 150ms ease;
+    padding: 0;
+    margin: 0;
 }
 
-button:hover {
-  background-color: @surface_alpha;
+/* Specific module text & icon colors */
+.item-cpu,
+.item-cpu label {
+    color: @blue_cyan;
 }
 
-#logo-btn {
-  color: @accent;
-  font-size: 18px;
-  padding: 0 8px 0 6px;
+.item-wifi,
+.item-wifi label,
+#wifi-btn,
+#wifi-btn label {
+    color: @blue_accent;
 }
 
-/* Workspaces */
-.workspaces {
-  background-color: transparent;
-  padding: 0 2px;
+.item-speaker,
+.item-speaker label,
+#speaker-btn,
+#speaker-btn label {
+    color: @blue_light;
 }
 
-.workspaces .item {
-  color: @muted;
-  background-color: transparent;
-  padding: 0 8px;
-  margin: 0 2px;
-  border-radius: 999px;
-  font-weight: 700;
-  transition: all 160ms ease;
+.item-clock,
+.item-clock label {
+    color: @blue_ice;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 0 3px;
 }
 
-.workspaces .item.focused {
-  color: @bg;
-  background: linear-gradient(135deg, @accent, @accent2);
-  padding: 0 12px;
+.item-mic,
+.item-mic label,
+#mic-btn,
+#mic-btn label {
+    color: @blue_cyan;
 }
 
-.workspaces .item:hover {
-  color: @text;
-  background-color: @surface_alpha;
+.item-bt,
+.item-bt label {
+    color: @blue_light;
 }
 
-/* Focused window title */
-.focused {
-  color: @text;
-  padding: 0 10px;
+.item-battery,
+.item-battery label,
+#battery-lbl {
+    color: @blue_cyan;
 }
 
-/* Center clock & right pills */
-.clock,
-.tray,
-.notifications,
-.network-manager,
-.volume,
-.upower,
-#clip-btn {
-  color: @text;
-  background-color: @surface_alpha;
-  border-radius: 12px;
-  padding: 2px 10px;
-  margin: 0 2px;
-}
-
-.clock {
-  color: @accent;
-  font-weight: 700;
-  background-color: transparent;
-}
-
-.notifications {
-  color: @accent2;
-}
-
-#clip-btn {
-  color: @accent;
-}
-
-#power-btn {
-  color: @danger;
-  background-color: @surface_alpha;
-  border-radius: 12px;
-  font-size: 15px;
-  padding: 2px 10px;
-  margin-left: 2px;
-}
-
-#power-btn:hover {
-  background-color: alpha(@danger, 0.22);
-}
-
-/* Popups (Calendar, Volume mixer, Battery details) */
+/* Popups (Calendar) */
+popover,
 .popup {
-  background-color: @bg;
-  color: @text;
-  border: 1px solid alpha(@accent, 0.45);
-  border-radius: 16px;
-  padding: 12px;
+    background-color: @bg_dark;
+    border: 1px solid @border_glow;
+    border-radius: 14px;
+    padding: 12px;
+    color: @text_white;
+}
+
+.popup-clock .calendar-clock {
+    color: @blue_cyan;
+    font-size: 2em;
+    font-weight: 700;
+    padding-bottom: 4px;
+}
+
+.popup-clock .calendar {
+    background-color: @bg_dark;
+    color: @text_white;
+}
+
+.popup-clock .calendar .header {
+    border-top: 1px solid @border_pill;
+    color: @blue_accent;
+    padding-top: 6px;
+}
+
+.popup-clock .calendar:selected,
+.popup-clock .calendar .today {
+    background-color: @blue_accent;
+    color: @bg_dark;
+    border-radius: 6px;
 }

@@ -5,7 +5,7 @@
 	<name>Open Terminal Here</name>
 	<submenu></submenu>
 	<unique-id>1791704983883985-1</unique-id>
-	<command>/home/oni/.local/bin/thunar-open-terminal.sh %f</command>
+	<command>kitty --directory %f</command>
 	<description>Open terminal in current or selected directory</description>
 	<range></range>
 	<patterns>*</patterns>
