@@ -1,18 +1,17 @@
-@define-color bg_dark #0a1120;
-@define-color bg_bar rgba(11, 18, 33, 0.94);
-
-@define-color border_glow rgba(96, 165, 250, 0.35);
-@define-color border_pill rgba(147, 197, 253, 0.16);
-
-@define-color blue_accent #60a5fa;
-@define-color blue_light #93c5fd;
-@define-color blue_cyan #38bdf8;
-@define-color blue_ice #e0f2fe;
-@define-color text_white #f8fafc;
+@define-color bg_dark #11111b;
+@define-color bg_bar rgba(17, 17, 27, 0.90);
+@define-color surface #313244;
+@define-color border_glow rgba(137, 180, 250, 0.45);
+@define-color border_pill rgba(205, 214, 244, 0.10);
+@define-color blue_accent #89b4fa;
+@define-color blue_light #b4befe;
+@define-color blue_cyan #94e2d5;
+@define-color blue_ice #cba6f7;
+@define-color text_white #cdd6f4;
 
 * {
     font-family: "JetBrainsMono Nerd Font", "Noto Sans Nerd Font", monospace, sans-serif;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 600;
     border: none;
     box-shadow: none;
@@ -35,9 +34,9 @@ window,
     border-right: 1px solid @border_glow;
     border-bottom: 1px solid @border_glow;
     border-top: none;
-    border-radius: 0 0 14px 14px;
-    padding: 3px 10px 4px 10px;
-    margin-top: -28px;
+    border-radius: 0 0 22px 22px;
+    padding: 6px 14px 8px 14px;
+    margin-top: -44px;
     opacity: 0.01;
     transition: margin-top 160ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease-out;
 }
@@ -50,9 +49,6 @@ window,
 
 /* Minimalist modules without hover background/border highlight */
 .bar-pill,
-.bar-pill:hover,
-.bar-pill:focus,
-.bar-pill:active,
 button,
 button:hover,
 button:focus,
@@ -65,8 +61,15 @@ button:active {
 }
 
 .bar-pill {
-    padding: 2px 7px;
-    margin: 0 1.5px;
+    padding: 3px 12px;
+    margin: 0 3px;
+    border-radius: 14px;
+    background-color: rgba(49, 50, 68, 0.55);
+    transition: background-color 150ms ease;
+}
+
+.bar-pill:hover {
+    background-color: rgba(137, 180, 250, 0.22);
 }
 
 button {
@@ -125,13 +128,13 @@ popover,
 .popup {
     background-color: @bg_dark;
     border: 1px solid @border_glow;
-    border-radius: 14px;
-    padding: 12px;
+    border-radius: 20px;
+    padding: 14px;
     color: @text_white;
 }
 
 .popup-clock .calendar-clock {
-    color: @blue_cyan;
+    color: @blue_ice;
     font-size: 2em;
     font-weight: 700;
     padding-bottom: 4px;
@@ -152,5 +155,5 @@ popover,
 .popup-clock .calendar .today {
     background-color: @blue_accent;
     color: @bg_dark;
-    border-radius: 6px;
+    border-radius: 8px;
 }

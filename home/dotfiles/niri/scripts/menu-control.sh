@@ -3,30 +3,27 @@ set -euo pipefail
 
 mode="${1:-launcher}"
 user="${USER:-$(id -un)}"
-style="$HOME/.config/wofi/style.css"
-conf="$HOME/.config/wofi/config"
-state_file="${XDG_RUNTIME_DIR:-/tmp}/wofi-${user}.mode"
+state_file="${XDG_RUNTIME_DIR:-/tmp}/fuzzel-${user}.mode"
 
-is_wofi_running() {
-  pkill -0 -u "$user" -x .wofi-wrapped 2>/dev/null || pkill -0 -u "$user" -x wofi 2>/dev/null
+is_fuzzel_running() {
+  pkill -0 -u "$user" -x fuzzel 2>/dev/null
 }
 
-kill_wofi() {
-  pkill -u "$user" -x .wofi-wrapped 2>/dev/null || true
-  pkill -u "$user" -x wofi 2>/dev/null || true
+kill_fuzzel() {
+  pkill -u "$user" -x fuzzel 2>/dev/null || true
 }
 
-# If an instance of wofi is already running
-if is_wofi_running; then
+# If an instance of fuzzel is already running
+if is_fuzzel_running; then
   current_mode=""
   [[ -f "$state_file" ]] && current_mode="$(< "$state_file" 2>/dev/null || true)"
 
   # Kill previous instance immediately
-  kill_wofi
+  kill_fuzzel
 
   # Wait up to 250ms for process to exit cleanly
   for _ in {1..25}; do
-    is_wofi_running || break
+    is_fuzzel_running || break
     sleep 0.01
   done
 
@@ -42,7 +39,7 @@ echo "$mode" > "$state_file"
 trap 'rm -f "$state_file" 2>/dev/null || true' EXIT INT TERM
 
 run_launcher() {
-  wofi --show drun --conf "$conf" --style "$style" --allow-images --width 720 --height 500
+  fuzzel
 }
 
 run_power() {
@@ -53,11 +50,11 @@ run_power() {
     '󰤄  Suspend' \
     '󰜉  Reboot' \
     '  Shutdown' \
-    | wofi --dmenu --prompt 'Power Control' --width 520 --height 390 --conf "$conf" --style "$style" || true)"
+    | fuzzel --dmenu --prompt 'Power  ' --width 28 --lines 5 || true)"
 
   confirm() {
     local action="$1"
-    answer="$(printf 'No\nYes\n' | wofi --dmenu --prompt "Confirm $action" --width 420 --height 190 --conf "$conf" --style "$style" || true)"
+    answer="$(printf 'No\nYes\n' | fuzzel --dmenu --prompt "Confirm $action  " --width 26 --lines 2 || true)"
     [[ "$answer" == "Yes" ]]
   }
 
@@ -82,19 +79,17 @@ run_wallpaper() {
   list="$(find "${dirs[@]}" -maxdepth 1 -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) 2>/dev/null | while IFS= read -r wall; do
     base="${wall##*/}"
     case "$base" in current|selected-wallpaper*) continue ;; esac
-    printf 'img:%s:text:%s\n' "$wall" "$base"
+    printf '%s\n' "$base"
   done | sort -u)"
 
   [[ -n "$list" ]] || { notify-send 'Wallpaper' 'No wallpaper images found' || true; exit 0; }
-  choice="$(printf '%s\n' "$list" | wofi --dmenu --allow-images --prompt 'Wallpaper' --width 920 --height 620 --conf "$conf" --style "$style" || true)"
+  choice="$(printf '%s\n' "$list" | fuzzel --dmenu --prompt 'Wallpaper  ' || true)"
   [[ -n "${choice:-}" ]] || exit 0
 
-  if [[ "$choice" =~ ^img:(.+):text: ]]; then
-    wall="${BASH_REMATCH[1]}"
-  else
-    wall="${choice#img:}"
-    wall="${wall%:text:*}"
-  fi
+  wall=""
+  for dir in "${dirs[@]}"; do
+    [[ -f "$dir/$choice" ]] && { wall="$dir/$choice"; break; }
+  done
 
   [[ -n "${wall:-}" && -f "$wall" ]] || { notify-send 'Wallpaper' 'Could not resolve selected wallpaper' || true; exit 1; }
   "$HOME/.config/niri/scripts/apply-wallpaper.sh" "$wall"
@@ -102,12 +97,9 @@ run_wallpaper() {
 
 run_clipboard() {
   local choice
-  choice="$( (echo "󰃢  [Очистити всю історію буфера]"; cliphist list 2>/dev/null | head -n 100) | wofi --dmenu \
-    --prompt "Clipboard" \
-    --width 720 \
-    --height 450 \
-    --conf "$conf" \
-    --style "$style" 2>/dev/null || true)"
+  choice="$( (echo "󰃢  [Очистити всю історію буфера]"; cliphist list 2>/dev/null | head -n 100) | fuzzel --dmenu \
+    --prompt "Clipboard  " \
+    --width 55 2>/dev/null || true)"
 
   [[ -n "${choice:-}" ]] || exit 0
 

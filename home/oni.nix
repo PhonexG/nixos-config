@@ -45,9 +45,8 @@
   xdg.configFile."swaync/config.json".source = ./dotfiles/swaync/config.json;
   xdg.configFile."swaync/style.css".source = ./dotfiles/swaync/style.css;
 
-  # Wofi
-  xdg.configFile."wofi/config".source = ./dotfiles/wofi/config;
-  xdg.configFile."wofi/style.css".source = ./dotfiles/wofi/style.css;
+  # Fuzzel
+  xdg.configFile."fuzzel/fuzzel.ini".source = ./dotfiles/fuzzel/fuzzel.ini;
 
   # Kitty (kitty.conf та дії; current-theme.conf генерується динамічно)
   xdg.configFile."kitty/kitty.conf".source = ./dotfiles/kitty/kitty.conf;

@@ -28,7 +28,7 @@
   environment.systemPackages = with pkgs; [
     xwayland-satellite
     ironbar
-    wofi
+    fuzzel
     swaynotificationcenter
     kitty
     wl-clipboard
