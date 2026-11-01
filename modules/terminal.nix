@@ -1,8 +1,27 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
+let
+  rebuildScript = pkgs.writeShellScriptBin "rebuild" ''
+    set -euo pipefail
+
+    REPO="/etc/nixos"
+    if [ -d "$REPO/.git" ]; then
+      ${pkgs.git}/bin/git -C "$REPO" add -A
+    fi
+
+    sudo nixos-rebuild switch --flake "$REPO#nixos" "$@"
+  '';
+in
 {
+  environment.sessionVariables = {
+    EDITOR = "micro";
+    VISUAL = "micro";
+    TERMINAL = "kitty";
+  };
+
   programs.fish = {
     enable = true;
+
     shellInit = ''
       set -g fish_greeting
 
@@ -23,13 +42,13 @@
       set -g fish_pager_color_description yellow
       set -g fish_pager_color_selected_background --background=brblack
     '';
+
     shellAliases = {
       ls = "eza --icons --group-directories-first";
       ll = "eza -lah --icons --group-directories-first --git";
       la = "eza -a --icons --group-directories-first";
       lt = "eza --tree --level=2 --icons --group-directories-first";
       cat = "bat --paging=never";
-	  rg = "rg";
       c = "z";
 
       # Git
@@ -51,9 +70,9 @@
 
       ports = "ss -tulpn";
       myip = "ip -brief addr";
-
       zen = "zen-beta";
     };
+
     interactiveShellInit = ''
       # Shell integrations
       if type -q nix-your-shell
@@ -67,57 +86,56 @@
       end
 
       function nixpin
-          set -l current_gen (readlink /nix/var/nix/profiles/system)
-          if test -z "$current_gen"
-              echo "Помилка: не вдалося знайти поточне системне покоління."
-              return 1
-          end
-          set -l timestamp (date +%Y%m%d_%H%M%S)
-          set -l root_path "/nix/var/nix/gcroots/pinned_system_$timestamp"
-          echo "Закріплюємо поточне покоління..."
-          sudo ln -sfn $current_gen $root_path
-          echo "Покоління успішно збережено: $root_path"
+        set -l current_gen (readlink /nix/var/nix/profiles/system)
+        if test -z "$current_gen"
+          echo "Помилка: не вдалося знайти поточне системне покоління."
+          return 1
+        end
+        set -l timestamp (date +%Y%m%d_%H%M%S)
+        set -l root_path "/nix/var/nix/gcroots/pinned_system_$timestamp"
+        echo "Закріплюємо поточне покоління..."
+        sudo ln -sfn $current_gen $root_path
+        echo "Покоління успішно збережено: $root_path"
       end
 
       function nixunpin
-          if test (count $argv) -eq 0
-              echo "Використання: nixunpin <мітка_часу>"
-              echo "Доступні закріплення:"
-              ls -1 /nix/var/nix/gcroots/pinned_system_*
-              return 1
-          end
-          sudo rm -f /nix/var/nix/gcroots/pinned_system_$argv[1]
-          echo "Закріплення для '$argv[1]' знято (тепер його можна видалити через nixclean)."
+        if test (count $argv) -eq 0
+          echo "Використання: nixunpin <мітка_часу>"
+          echo "Доступні закріплення:"
+          ls -1 /nix/var/nix/gcroots/pinned_system_*
+          return 1
+        end
+        sudo rm -f /nix/var/nix/gcroots/pinned_system_$argv[1]
+        echo "Закріплення для '$argv[1]' знято (тепер його можна видалити через nixclean)."
       end
 
       function nixswitch
-          if test (count $argv) -eq 0
-              echo "Використання: nixswitch <номер_покоління>"
-              echo "Ось доступні покоління:"
-              sudo nixos-rebuild list-generations
-              return 1
-          end
-          set -l gen $argv[1]
-          set -l profile_path "/nix/var/nix/profiles/system-$gen-link"
-          if test -e $profile_path
-              echo "Перемикаємося на покоління №$gen..."
-              sudo $profile_path/bin/switch-to-configuration switch
-          else
-              echo "❌ Покоління №$gen не знайдено або вже видалене."
-              return 1
-          end
+        if test (count $argv) -eq 0
+          echo "Використання: nixswitch <номер_покоління>"
+          echo "Ось доступні покоління:"
+          sudo nixos-rebuild list-generations
+          return 1
+        end
+        set -l gen $argv[1]
+        set -l profile_path "/nix/var/nix/profiles/system-$gen-link"
+        if test -e $profile_path
+          echo "Перемикаємося на покоління №$gen..."
+          sudo $profile_path/bin/switch-to-configuration switch
+        else
+          echo "❌ Покоління №$gen не знайдено або вже видалене."
+          return 1
+        end
       end
 
       function nmtui
-          nmcli device wifi rescan
-          command nmtui $argv
+        nmcli device wifi rescan
+        command nmtui $argv
       end
     '';
   };
 
   users.users.oni.shell = pkgs.fish;
 
-  # Shell integrations enabled natively in NixOS
   programs.starship.enable = true;
   programs.zoxide.enable = true;
   programs.direnv.enable = true;
@@ -126,8 +144,9 @@
     keybindings = true;
   };
 
-  # CLI utilities & tools
+  # Командний рядок та інтерактивні утиліти.
   environment.systemPackages = with pkgs; [
+    rebuildScript
     starship
     micro
     nix-index

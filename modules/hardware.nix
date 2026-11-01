@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   # AMD CPU/GPU: keep the stock NixOS kernel and Mesa stack unless a project

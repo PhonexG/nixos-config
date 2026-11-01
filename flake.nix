@@ -3,23 +3,34 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs =
+    inputs@{
+      nixpkgs,
+      home-manager,
+      ...
+    }:
     let
       system = "x86_64-linux";
-    in {
+    in
+    {
+      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = { inherit inputs; };
+
         modules = [
           ./configuration.nix
           home-manager.nixosModules.home-manager
@@ -33,18 +44,6 @@
             };
           }
         ];
-      };
-
-      # Project scaffolds:  nix flake init -t /etc/nixos#cpp   (or #python)
-      templates = {
-        cpp = {
-          path = ./templates/cpp;
-          description = "C/C++ dev shell: gcc, cmake, ninja, gdb, clangd";
-        };
-        python = {
-          path = ./templates/python;
-          description = "Python dev shell with uv and ruff";
-        };
       };
     };
 }

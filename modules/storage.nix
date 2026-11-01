@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   services.udisks2 = {
@@ -30,11 +30,11 @@
   ];
 
   boot.kernel.sysctl = {
-      "vm.dirty_background_bytes" = 16 * 1024 * 1024; # 16 MB
-      "vm.dirty_bytes" = 48 * 1024 * 1024;            # 48 MB
-    };
-	
-  # Stock Thunar (no source patches): native context menu and Open With behavior.
+    "vm.dirty_background_bytes" = 16 * 1024 * 1024; # 16 MB
+    "vm.dirty_bytes" = 48 * 1024 * 1024; # 48 MB
+  };
+
+  # Стандартний Thunar без патчів вихідного коду.
   programs.thunar = {
     enable = true;
     plugins = with pkgs.xfce; [
@@ -46,10 +46,10 @@
   programs.xfconf.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # Єдиний графічний архіватор з усіма бекендами
+    # Графічний архіватор
     file-roller
 
-    # Повний набір рушіїв розпакування/запакування для всіх можливих форматів
+    # Формати архівів
     _7zz
     p7zip
     unrar
@@ -66,6 +66,7 @@
     lzop
     cpio
 
+    # Носії та файлові системи
     xfce.exo
     udisks2
     gvfs

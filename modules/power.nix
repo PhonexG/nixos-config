@@ -1,8 +1,9 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
-  toggleEco = pkgs.callPackage ../scripts/toggle-eco.nix {};
-in {
+  toggleEco = pkgs.callPackage ../scripts/toggle-eco.nix { };
+in
+{
   # Завантаження драйвера HP BIOS WMI для перевірки параметрів у sysfs
   boot.kernelModules = [ "hp-bioscfg" ];
 
@@ -73,9 +74,9 @@ in {
     AllowSuspendThenHibernate=no
   '';
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     toggleEco
-    pkgs.powertop
+    powertop
   ];
 
   security.sudo.extraRules = [

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   # HP EliteBook 665 G11 with ALC236 codec SSID 103c:8c82:
