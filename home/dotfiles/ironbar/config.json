@@ -5,123 +5,170 @@
   "anchor_to_edges": false,
   "layer": "overlay",
   "exclusive_zone": false,
-  "popup_gap": 38,
-  "height": 1,
+  "popup_gap": 30,
+  "height": 26,
+  "autohide": 350,
+  "start_hidden": true,
+  "ironvar_defaults": {
+    "tray_open": "false",
+    "tray_arrow": "",
+    "notifications_status": "Notifications: loading status…"
+  },
   "margin": {
     "top": 0,
     "bottom": 0,
     "left": 0,
     "right": 0
   },
+  "start": [],
   "center": [
     {
       "type": "custom",
-      "name": "dropdown",
-      "class": "dropdown-tab",
-      "on_mouse_enter": "ironbar style add-class dropdown open",
-      "on_mouse_exit": "ironbar style remove-class dropdown open",
+      "name": "tray-expander",
+      "class": "item-tray-toggle",
+      "tooltip": "Tray — click to open / close",
       "bar": [
         {
+          "type": "button",
+          "name": "tray-toggle-btn",
+          "label": "#tray_arrow",
+          "on_click": "!/home/oni/.config/ironbar/controls.sh tray-toggle"
+        },
+        {
+          "type": "tray",
+          "name": "tray",
+          "icon_size": 16,
+          "show_if": "#tray_open",
+          "transition_type": "none",
+          "exclude": ["nm-applet", "blueman"]
+        }
+      ]
+    },
+    {
+      "type": "custom",
+      "name": "notifications",
+      "class": "bar-icon item-notifications",
+      "tooltip": "#notifications_status\nLeft click: notifications · Right click: Do Not Disturb",
+      "bar": [
+        {
+          "type": "button",
+          "name": "notifications-btn",
+          "label": "{{watch:python3 /home/oni/.config/ironbar/notifications.py}}",
+          "on_click": "!/home/oni/.config/ironbar/controls.sh notifications",
+          "on_click_right": "/home/oni/.config/ironbar/controls.sh dnd"
+        }
+      ]
+    },
+    {
+      "type": "bluetooth",
+      "name": "bluetooth",
+      "class": "item-bt",
+      "icon_size": 16,
+      "tooltip": "Bluetooth — devices and connections",
+      "popup": {
+        "header": "  Bluetooth",
+        "scrollable": true,
+        "device": {
+          "header": "{device_alias}",
+          "header_battery": "{device_alias}",
+          "footer": "{device_status}",
+          "footer_battery": "{device_status} · {device_battery_percent}%"
+        }
+      },
+      "adapter_status": {
+        "not_found": "No Bluetooth adapter found",
+        "enabled": "Bluetooth enabled",
+        "enabling": "Enabling…",
+        "disabled": "Bluetooth disabled",
+        "disabling": "Disabling…"
+      },
+      "device_status": {
+        "connected": "Connected",
+        "connecting": "Connecting…",
+        "disconnected": "Disconnected",
+        "disconnecting": "Disconnecting…"
+      },
+      "format": {
+        "disabled": "󰂲",
+        "enabled": "",
+        "connected": "󰂱",
+        "connected_battery": "󰂱"
+      }
+    },
+    {
+      "type": "network_manager",
+      "name": "wifi",
+      "class": "item-wifi"
+    },
+    {
+      "type": "volume",
+      "name": "speaker",
+      "class": "bar-icon item-speaker",
+      "format": "{icon}",
+      "max_volume": 100,
+      "icons": {
+        "volume_high": "",
+        "volume_medium": "",
+        "volume_low": "",
+        "muted": ""
+      },
+      "truncate": { "mode": "end", "max_length": 24 },
+      "tooltip": "{{2000:/home/oni/.config/ironbar/speaker-status.sh --summary}}\nLeft click: mixer · Right click: mute · Wheel: ±5%",
+      "on_click_right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+      "on_scroll_up": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+",
+      "on_scroll_down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+      "smooth_scroll_speed": 10
+    },
+    {
+      "type": "custom",
+      "name": "cpu",
+      "class": "bar-icon item-cpu",
+      "tooltip": "CPU usage",
+      "bar": [
+        { "type": "button", "name": "cpu-btn", "label": "󰍛", "on_click": "popup:toggle" }
+      ],
+      "popup": [
+        {
           "type": "box",
-          "name": "dropdown-box",
-          "class": "dropdown-box",
+          "orientation": "vertical",
           "widgets": [
-            {
-              "type": "sys_info",
-              "name": "cpu",
-              "class": "bar-pill item-cpu",
-              "format": ["  {cpu_percent}%"],
-              "interval": {
-                "cpu": 1
-              },
-              "on_mouse_enter": "ironbar style add-class dropdown open",
-              "on_click_left": "kitty -e btop"
-            },
-            {
-              "type": "custom",
-              "name": "wifi",
-              "class": "bar-pill item-wifi",
-              "on_mouse_enter": "ironbar style add-class dropdown open",
-              "bar": [
-                {
-                  "type": "button",
-                  "name": "wifi-btn",
-                  "class": "wifi-btn",
-                  "label": "{{watch:/home/oni/.config/ironbar/wifi-status.sh}}",
-                  "on_click": "!kitty -e nmtui"
-                }
-              ]
-            },
-            {
-              "type": "custom",
-              "name": "speaker",
-              "class": "bar-pill item-speaker",
-              "on_mouse_enter": "ironbar style add-class dropdown open",
-              "bar": [
-                {
-                  "type": "button",
-                  "name": "speaker-btn",
-                  "class": "speaker-btn",
-                  "label": "{{watch:/home/oni/.config/ironbar/speaker-status.sh}}",
-                  "on_click": "!pavucontrol"
-                }
-              ]
-            },
-            {
-              "type": "clock",
-              "name": "clock",
-              "class": "bar-pill item-clock",
-              "format": "  %H:%M",
-              "format_popup": "%A, %d %B %Y",
-              "on_mouse_enter": "ironbar style add-class dropdown open"
-            },
-            {
-              "type": "custom",
-              "name": "mic",
-              "class": "bar-pill item-mic",
-              "on_mouse_enter": "ironbar style add-class dropdown open",
-              "bar": [
-                {
-                  "type": "button",
-                  "name": "mic-btn",
-                  "class": "mic-btn",
-                  "label": "{{watch:/home/oni/.config/ironbar/mic-status.sh}}",
-                  "on_click": "!wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-                }
-              ]
-            },
-            {
-              "type": "bluetooth",
-              "name": "bluetooth",
-              "class": "bar-pill item-bt",
-              "icon_size": 15,
-              "disable_popup": true,
-              "on_mouse_enter": "ironbar style add-class dropdown open",
-              "on_click_left": "blueman-manager",
-              "format": {
-                "disabled": "󰂲  Off",
-                "enabled": "󰂯  On",
-                "connected": "󰂱  {device_alias}",
-                "connected_battery": "󰂱  {device_alias} {device_battery_percent}%"
-              }
-            },
-            {
-              "type": "custom",
-              "name": "battery",
-              "class": "bar-pill item-battery",
-              "on_mouse_enter": "ironbar style add-class dropdown open",
-              "bar": [
-                {
-                  "type": "label",
-                  "name": "battery-lbl",
-                  "class": "battery-lbl",
-                  "label": "{{watch:/home/oni/.config/ironbar/battery-status.sh}}"
-                }
-              ]
-            }
+            { "type": "label", "class": "popup-title", "label": "Processor" },
+            { "type": "label", "class": "stats", "justify": "left", "label": "{{watch:python3 /home/oni/.config/ironbar/panel-status.py cpu}}" }
           ]
         }
       ]
+    },
+    {
+      "type": "custom",
+      "name": "battery",
+      "class": "bar-icon item-battery",
+      "tooltip": "{{30000:/home/oni/.config/ironbar/battery-status.sh --summary}}",
+      "bar": [
+        {
+          "type": "button",
+          "name": "battery-btn",
+          "label": "{{watch:/home/oni/.config/ironbar/battery-status.sh --icon}}",
+          "on_click": "popup:toggle"
+        }
+      ],
+      "popup": [
+        {
+          "type": "box",
+          "orientation": "vertical",
+          "widgets": [
+            { "type": "label", "class": "popup-title", "label": "Battery" },
+            { "type": "label", "class": "stats", "justify": "left", "label": "{{watch:python3 /home/oni/.config/ironbar/panel-status.py battery}}" }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "clock",
+      "name": "clock",
+      "class": "item-clock",
+      "format": "%H:%M",
+      "format_popup": "%A, %d %B %Y"
     }
-  ]
+  ],
+  "end": []
 }

@@ -107,6 +107,6 @@ safe_write(wofi_dir/'colors.css', f'''@define-color bg {rgb(bg,'0.84')};\n@defin
 PY
 fi
 
-ironbar reload >/dev/null 2>&1 || true
+# Ironbar uses a fixed Tokyo Night palette; wallpaper changes need no reload.
 swaync-client -R >/dev/null 2>&1 || true
 swaync-client -rs >/dev/null 2>&1 || true

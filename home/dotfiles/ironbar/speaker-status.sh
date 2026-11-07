@@ -38,6 +38,18 @@ print_status() {
   fi
 }
 
+if [[ "${1:-}" == --summary ]]; then
+  status=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null)
+  if [[ -z "$status" ]]; then
+    echo "Audio unavailable"
+  elif [[ "$status" == *"[MUTED]"* ]]; then
+    echo "Audio muted · $(parse_vol "$status")%"
+  else
+    echo "Volume: $(parse_vol "$status")%"
+  fi
+  exit 0
+fi
+
 last=""
 emit() {
   local cur
@@ -48,7 +60,25 @@ emit() {
   fi
 }
 
+# React to PipeWire changes instead of polling wpctl once per second.
+# Ignore client events: running wpctl creates its own PipeWire client.
+emit
 while true; do
-  emit
+  changed=false
+  while IFS= read -r line; do
+    case "$line" in
+      *"Spa:Pod:Object:Param:Props:mute"*|*"Spa:Pod:Object:Param:Props:channelVolumes"*|*"default.audio.sink"*)
+        changed=true
+        ;;
+      "")
+        if [[ "$changed" == true ]]; then
+          emit
+          changed=false
+        fi
+        ;;
+    esac
+  done < <(stdbuf -oL pw-mon --no-colors --hide-props --print-separator 2>/dev/null)
+  # Reconnect if PipeWire is restarted.
   sleep 1
+  emit
 done

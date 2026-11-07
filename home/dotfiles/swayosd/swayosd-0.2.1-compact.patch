@@ -1,0 +1,32 @@
+--- a/src/server/osd_window.rs
++++ b/src/server/osd_window.rs
+@@ -19,7 +19,7 @@
+ 
+ use gtk_layer_shell::LayerShell;
+ 
+-const ICON_SIZE: i32 = 32;
++const ICON_SIZE: i32 = 20;
+ 
+ /// A window that our application can open that contains the main project view.
+ #[derive(Clone, Debug)]
+@@ -47,9 +47,9 @@
+ 
+ 		// Set up the widgets
+-		window.set_width_request(250);
++		window.set_width_request(220);
+ 
+ 		let container = cascade! {
+-			gtk::Box::new(gtk::Orientation::Horizontal, 12);
++			gtk::Box::new(gtk::Orientation::Horizontal, 8);
+ 			..set_widget_name("container");
+ 		};
+ 
+@@ -275,7 +275,7 @@
+ 		}
+ 		let s = self.clone();
+ 		self.timeout_id.replace(Some(glib::timeout_add_local_once(
+-			Duration::from_millis(1000),
++			Duration::from_millis(600),
+ 			move || {
+ 				s.window.hide();
+ 				s.timeout_id.replace(None);

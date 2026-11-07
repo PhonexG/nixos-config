@@ -1,15 +1,24 @@
-@import "colors.css";
+/* One flat Tokyo Night style for both pop-up messages and notification history. */
+@define-color background #1a1b26;
+@define-color foreground #a9b1d6;
+@define-color accent #7aa2f7;
+@define-color surface #32344a;
+@define-color muted #787c99;
+@define-color danger #f7768e;
 
 * {
-  font-family: "JetBrainsMono Nerd Font", "Iosevka Nerd Font", sans-serif;
-  font-size: 13px;
+  font-family: "JetBrainsMono Nerd Font", "Noto Sans Nerd Font", sans-serif;
+  font-size: 12px;
+  color: @foreground;
+  border-radius: 0;
+  box-shadow: none;
+  background-image: none;
 }
 
 .control-center {
-  background: @bg_alpha;
-  border: 1px solid alpha(@accent, 0.42);
-  border-radius: 24px;
-  padding: 14px;
+  background: @background;
+  border: 1px solid @surface;
+  padding: 12px;
 }
 
 .notification-row {
@@ -17,20 +26,27 @@
 }
 
 .notification {
-  background: @surface_alpha;
-  border: 1px solid alpha(@accent2, 0.32);
-  border-radius: 18px;
-  padding: 12px;
-  margin: 7px 0;
+  background: @background;
+  border: 2px solid @accent;
+  padding: 10px 15px;
+  margin: 0;
+}
+
+.floating-notifications .notification-row {
+  margin: 20px 20px 0;
+}
+
+.control-center .notification {
+  margin: 6px 0;
 }
 
 .notification-content {
-  color: @text;
+  color: @foreground;
 }
 
 .summary {
-  color: @text;
-  font-weight: 700;
+  color: @foreground;
+  font-weight: 600;
 }
 
 .time {
@@ -38,26 +54,66 @@
 }
 
 .body {
-  color: @text;
+  color: @foreground;
 }
 
 .close-button {
-  background: @danger;
-  color: @bg;
-  border-radius: 999px;
+  background: transparent;
+  color: @muted;
+  border: none;
+}
+
+.close-button:hover {
+  background: @surface;
+  color: @danger;
 }
 
 .widget-title,
 .widget-dnd {
-  color: @text;
-  background: @surface_alpha;
-  border-radius: 18px;
-  padding: 10px 12px;
-  margin: 6px 0;
+  color: @foreground;
+  background: transparent;
+  border-bottom: 1px solid @surface;
+  padding: 8px 2px;
+  margin: 0 0 8px;
 }
 
 .widget-title button,
 .widget-dnd switch {
-  background: alpha(@accent, 0.20);
-  border-radius: 999px;
+  background: @surface;
+  color: @foreground;
+  border: none;
+}
+
+.widget-title button {
+  padding: 4px 8px;
+}
+
+.widget-title button:hover,
+.notification-action:hover {
+  background: @surface;
+  color: @accent;
+}
+
+.widget-dnd switch:checked {
+  background: @accent;
+}
+
+.widget-dnd switch slider {
+  background: @foreground;
+  border: none;
+}
+
+.notification-action {
+  background: transparent;
+  border-top: 1px solid @surface;
+  padding: 6px;
+}
+
+.control-center .notification-group {
+  background: transparent;
+}
+
+.notification-group-headers {
+  color: @muted;
+  padding: 6px 2px;
 }

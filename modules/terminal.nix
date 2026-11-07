@@ -122,7 +122,7 @@ in
           echo "Перемикаємося на покоління №$gen..."
           sudo $profile_path/bin/switch-to-configuration switch
         else
-          echo "❌ Покоління №$gen не знайдено або вже видалене."
+          echo "Покоління №$gen не знайдено або вже видалене."
           return 1
         end
       end
@@ -148,6 +148,7 @@ in
   environment.systemPackages = with pkgs; [
     rebuildScript
     starship
+    neovim
     micro
     nix-index
     nix-output-monitor

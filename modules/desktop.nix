@@ -102,7 +102,6 @@ in
   environment.systemPackages =
     (with pkgs; [
       xwayland-satellite
-      ironbar
       fuzzel
       swaynotificationcenter
       kitty

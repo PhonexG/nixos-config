@@ -1,19 +1,16 @@
-@define-color bg_dark #11111b;
-@define-color bg_bar rgba(17, 17, 27, 0.90);
-@define-color surface #313244;
-@define-color border_glow rgba(137, 180, 250, 0.45);
-@define-color border_pill rgba(205, 214, 244, 0.10);
-@define-color blue_accent #89b4fa;
-@define-color blue_light #b4befe;
-@define-color blue_cyan #94e2d5;
-@define-color blue_ice #cba6f7;
-@define-color text_white #cdd6f4;
+/* Centered 26px strip, readable icons, native controls, Tokyo Night. */
+@define-color background #1a1b26;
+@define-color foreground #a9b1d6;
+@define-color accent #7aa2f7;
+@define-color surface #32344a;
 
 * {
-    font-family: "JetBrainsMono Nerd Font", "Noto Sans Nerd Font", monospace, sans-serif;
-    font-size: 13px;
-    font-weight: 600;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 12px;
+    font-weight: normal;
+    color: @foreground;
     border: none;
+    border-radius: 0;
     box-shadow: none;
     background-image: none;
     outline: none;
@@ -21,139 +18,255 @@
 }
 
 window,
-.background,
-#bar,
-#bar #center {
+.background {
     background-color: transparent;
 }
 
-/* Minimalist drop-down tab with smooth slide-down animation from top edge */
-.dropdown-tab {
-    background-color: @bg_bar;
-    border-left: 1px solid @border_glow;
-    border-right: 1px solid @border_glow;
-    border-bottom: 1px solid @border_glow;
-    border-top: none;
-    border-radius: 0 0 22px 22px;
-    padding: 6px 14px 8px 14px;
-    margin-top: -44px;
-    opacity: 0.01;
-    transition: margin-top 160ms cubic-bezier(0.22, 1, 0.36, 1), opacity 120ms ease-out;
+#bar {
+    background-color: @background;
+    padding: 0 6px;
 }
 
-.dropdown-tab.open,
-.dropdown-tab:hover {
-    margin-top: 0px;
-    opacity: 1;
-}
-
-/* Minimalist modules without hover background/border highlight */
-.bar-pill,
-button,
-button:hover,
-button:focus,
-button:active {
+#bar #start,
+#bar #center,
+#bar #end {
     background-color: transparent;
-    background-image: none;
-    border: none;
-    box-shadow: none;
-    outline: none;
-}
-
-.bar-pill {
-    padding: 3px 12px;
-    margin: 0 3px;
-    border-radius: 14px;
-    background-color: rgba(49, 50, 68, 0.55);
-    transition: background-color 150ms ease;
-}
-
-.bar-pill:hover {
-    background-color: rgba(137, 180, 250, 0.22);
-}
-
-button {
     padding: 0;
     margin: 0;
 }
 
-/* Specific module text & icon colors */
-.item-cpu,
-.item-cpu label {
-    color: @blue_cyan;
+#bar button {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    min-width: 28px;
+    min-height: 26px;
 }
 
-.item-wifi,
-.item-wifi label,
-#wifi-btn,
-#wifi-btn label {
-    color: @blue_accent;
+/* Uniform hit targets; only the glyphs grow, not the panel or dropdown text. */
+#bar .bar-icon,
+#bar .item-bt,
+#bar .item-wifi,
+#bar .item-tray-toggle {
+    margin: 0 1px;
+    padding: 0;
 }
 
-.item-speaker,
-.item-speaker label,
-#speaker-btn,
-#speaker-btn label {
-    color: @blue_light;
+#bar .bar-icon label,
+#bar .item-bt label,
+#bar .item-wifi label,
+#tray-toggle-btn label {
+    font-size: 16px;
+    color: @foreground;
 }
 
-.item-clock,
-.item-clock label {
-    color: @blue_ice;
-    font-weight: 700;
-    font-size: 13px;
-    padding: 0 3px;
+#bar button:hover label {
+    color: @accent;
 }
 
-.item-mic,
-.item-mic label,
-#mic-btn,
-#mic-btn label {
-    color: @blue_cyan;
+#bar .item-clock {
+    margin-left: 8px;
+    border-left: 1px solid @surface;
 }
 
-.item-bt,
-.item-bt label {
-    color: @blue_light;
+#bar .item-clock label {
+    padding: 0 8px;
 }
 
-.item-battery,
-.item-battery label,
-#battery-lbl {
-    color: @blue_cyan;
+.tray .tray-placeholder {
+    color: #787c99;
+    font-size: 11px;
+    padding-right: 8px;
 }
 
-/* Popups (Calendar) */
+/* Tray context menus and hover details stay flat, without themed GTK chrome. */
+menu,
 popover,
 .popup {
-    background-color: @bg_dark;
-    border: 1px solid @border_glow;
-    border-radius: 20px;
-    padding: 14px;
-    color: @text_white;
+    background-color: @background;
+    color: @foreground;
+    border: 1px solid @accent;
+    padding: 12px;
+}
+
+menuitem {
+    padding: 5px 8px;
+}
+
+menuitem:hover {
+    background-color: @surface;
+}
+
+tooltip,
+tooltip.background {
+    background-color: @background;
+    border: 1px solid @surface;
+    padding: 2px;
+    color: @foreground;
+}
+
+/* Flat native dropdowns: no terminal launchers or copied system menus. */
+.popup-volume {
+    min-width: 320px;
+}
+
+.popup-volume .device-box,
+.popup-volume .app-box {
+    padding: 4px;
+}
+
+.popup-volume .apps-box {
+    border-top: 1px solid @surface;
+    padding-top: 8px;
+}
+
+.popup-volume .device-selector button,
+.popup-volume .btn-mute {
+    background-color: @surface;
+    padding: 6px 10px;
+}
+
+.popup-volume .slider {
+    padding: 8px;
+}
+
+scale trough {
+    background-color: @surface;
+    min-width: 3px;
+    min-height: 3px;
+}
+
+scale highlight {
+    background-color: @accent;
+    min-width: 3px;
+    min-height: 3px;
+}
+
+scale slider {
+    background-color: @foreground;
+    min-width: 8px;
+    min-height: 8px;
+    margin: -3px;
+}
+
+.popup-bluetooth {
+    min-width: 300px;
+}
+
+.popup-bluetooth .header {
+    padding: 4px 0 12px;
+    border-bottom: 1px solid @surface;
+}
+
+.popup-bluetooth .device {
+    padding: 10px 0;
+}
+
+.popup-bluetooth button {
+    background-color: @surface;
+    padding: 6px 10px;
+}
+
+.popup-bluetooth .disabled {
+    padding: 12px;
+}
+
+.popup switch {
+    font-size: 0;
+    color: transparent;
+    background-color: @surface;
+    min-width: 32px;
+    min-height: 16px;
+}
+
+.popup switch:checked {
+    background-color: @accent;
+}
+
+.popup switch slider {
+    background-color: @foreground;
+    min-width: 14px;
+    min-height: 14px;
 }
 
 .popup-clock .calendar-clock {
-    color: @blue_ice;
-    font-size: 2em;
-    font-weight: 700;
-    padding-bottom: 4px;
+    padding: 0 0 12px;
 }
 
 .popup-clock .calendar {
-    background-color: @bg_dark;
-    color: @text_white;
+    background-color: @background;
 }
 
-.popup-clock .calendar .header {
-    border-top: 1px solid @border_pill;
-    color: @blue_accent;
-    padding-top: 6px;
+.popup-clock .calendar:selected {
+    background-color: @accent;
+    color: @background;
 }
 
-.popup-clock .calendar:selected,
-.popup-clock .calendar .today {
-    background-color: @blue_accent;
-    color: @bg_dark;
-    border-radius: 8px;
+.popup button {
+    background-color: @surface;
+    padding: 8px 10px;
+    min-height: 18px;
+}
+
+.popup button:hover,
+.popup button:focus {
+    background-color: #414868;
+}
+
+.popup button:disabled {
+    color: #787c99;
+}
+
+.popup button.connected {
+    border-left: 2px solid @accent;
+}
+
+.popup-title {
+    color: @accent;
+    font-weight: bold;
+    padding: 0 0 8px;
+}
+
+.popup entry {
+    background-color: @surface;
+    border: 1px solid #414868;
+    padding: 8px;
+    caret-color: @foreground;
+}
+
+.popup entry:focus {
+    border-color: @accent;
+}
+
+.popup .status-message {
+    color: #9aa5ce;
+    font-size: 11px;
+}
+
+.popup .stats {
+    min-width: 280px;
+    padding: 6px 4px;
+}
+
+.popup-network_manager {
+    min-width: 340px;
+}
+
+.popup-bluetooth .status {
+    padding: 0 10px;
+}
+
+.popup-bluetooth .footer-label {
+    color: #787c99;
+    font-size: 11px;
+}
+
+scrollbar trough {
+    background-color: @background;
+}
+
+scrollbar slider {
+    background-color: #414868;
+    min-width: 4px;
+    min-height: 24px;
 }

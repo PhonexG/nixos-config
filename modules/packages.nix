@@ -16,7 +16,7 @@ in
     telegram-desktop
     obsidian
     steam
-
+    jetbrains.idea 
     # Мультимедіа
     mpv
     ffmpeg
