@@ -226,7 +226,7 @@ impl Module<Button> for NetworkManagerModule {
         let scroll = ScrolledWindow::new(gtk::Adjustment::NONE, gtk::Adjustment::NONE);
         scroll.set_policy(gtk::PolicyType::Never, gtk::PolicyType::Automatic);
         scroll.set_min_content_height(80);
-        scroll.set_max_content_height(420);
+        scroll.set_max_content_height(700);
         scroll.set_propagate_natural_height(true);
         scroll.add(&list);
         root.add(&scroll);

@@ -1,14 +1,14 @@
 /* Windows-like bottom-center feedback, using the panel's Tokyo Night palette. */
 window#osd {
-    min-width: 220px;
-    border-radius: 8px;
+    min-width: 180px;
+    border-radius: 6px;
     border: 1px solid #32344a;
     background: #1a1b26;
     box-shadow: none;
 }
 
 window#osd #container {
-    margin: 5px 10px;
+    margin: 4px 8px;
 }
 
 window#osd image,
@@ -18,13 +18,13 @@ window#osd label {
 
 window#osd label {
     font-family: "JetBrainsMono Nerd Font", monospace;
-    font-size: 12px;
-    min-width: 36px;
+    font-size: 11px;
+    min-width: 32px;
 }
 
 window#osd progressbar {
-    min-width: 112px;
-    min-height: 4px;
+    min-width: 96px;
+    min-height: 3px;
     background: transparent;
     border: none;
 }
@@ -32,7 +32,7 @@ window#osd progressbar {
 window#osd trough,
 window#osd progress {
     min-width: 0;
-    min-height: 4px;
+    min-height: 3px;
     border-radius: 999px;
     border: none;
     padding: 0;

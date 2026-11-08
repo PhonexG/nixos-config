@@ -252,6 +252,18 @@ scale slider {
     min-width: 340px;
 }
 
+/* Keep connection menus tall even when a radio is disabled. */
+.popup-bluetooth,
+.popup-network_manager {
+    min-height: 360px;
+}
+
+/* Taller connection lists, including when only a few devices are available. */
+.popup-bluetooth scrolledwindow,
+.popup-network_manager scrolledwindow {
+    min-height: 300px;
+}
+
 .popup-bluetooth .status {
     padding: 0 10px;
 }

@@ -5,7 +5,7 @@
  use gtk_layer_shell::LayerShell;
  
 -const ICON_SIZE: i32 = 32;
-+const ICON_SIZE: i32 = 20;
++const ICON_SIZE: i32 = 16;
  
  /// A window that our application can open that contains the main project view.
  #[derive(Clone, Debug)]
@@ -13,11 +13,11 @@
  
  		// Set up the widgets
 -		window.set_width_request(250);
-+		window.set_width_request(220);
++		window.set_width_request(180);
  
  		let container = cascade! {
 -			gtk::Box::new(gtk::Orientation::Horizontal, 12);
-+			gtk::Box::new(gtk::Orientation::Horizontal, 8);
++			gtk::Box::new(gtk::Orientation::Horizontal, 6);
  			..set_widget_name("container");
  		};
  

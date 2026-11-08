@@ -555,7 +555,7 @@ replace("src/modules/bluetooth/mod.rs",
         container.connect_unmap(move |_| { discovery_tx.send_spawn(BluetoothAction::Discover(false)); });
         let devices = ScrolledWindow::new(gtk::Adjustment::NONE, gtk::Adjustment::NONE);
         devices.set_min_content_height(60);
-        devices.set_max_content_height(420);
+        devices.set_max_content_height(700);
         devices.set_propagate_natural_height(true);''')
 replace("src/modules/bluetooth/mod.rs",
         "                devices.set_visible(state.is_enabled());",
