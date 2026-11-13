@@ -86,6 +86,8 @@ in
       Description = "Volume and brightness OSD observer";
       After = [
         "graphical-session-pre.target"
+        # Match SwayOSD's ordering to avoid a cycle through the session target.
+        "graphical-session.target"
         "swayosd.service"
       ];
       Wants = [ "swayosd.service" ];
