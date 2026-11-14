@@ -11,6 +11,36 @@ icon_theme = "Papirus-Dark"
 tray_open = "false"
 tray_arrow = "󰅀"
 notifications_status = "Notifications: loading status…"
+wifi_toggle_label = "On"
+wifi_status_msg = "Scanning networks…"
+wifi_status_show = "true"
+wifi_item_1_show = "false"
+wifi_item_1_label = ""
+wifi_item_2_show = "false"
+wifi_item_2_label = ""
+wifi_item_3_show = "false"
+wifi_item_3_label = ""
+wifi_item_4_show = "false"
+wifi_item_4_label = ""
+wifi_item_5_show = "false"
+wifi_item_5_label = ""
+wifi_item_6_show = "false"
+wifi_item_6_label = ""
+bt_toggle_label = "On"
+bt_status_msg = "Checking Bluetooth…"
+bt_status_show = "true"
+bt_item_1_show = "false"
+bt_item_1_label = ""
+bt_item_2_show = "false"
+bt_item_2_label = ""
+bt_item_3_show = "false"
+bt_item_3_label = ""
+bt_item_4_show = "false"
+bt_item_4_label = ""
+bt_item_5_show = "false"
+bt_item_5_label = ""
+bt_item_6_show = "false"
+bt_item_6_label = ""
 
 [margin]
 top = 0
@@ -86,28 +116,196 @@ transition_type = "none"
 type = "custom"
 name = "wifi"
 class = "bar-icon item-wifi"
-tooltip = "{{5000:/home/oni/.config/ironbar/controls.sh wifi-summary}}"
+tooltip = "{{3000:/home/oni/.config/ironbar/controls.sh wifi-summary}}"
 
 [[end.bar]]
 type = "button"
 name = "wifi-btn"
-label = "{{5000:/home/oni/.config/ironbar/controls.sh wifi-icon}}"
+label = "{{3000:/home/oni/.config/ironbar/controls.sh wifi-icon}}"
 orientation = "horizontal"
-on_click = "!/home/oni/.config/ironbar/controls.sh wifi"
-on_click_right = "!/home/oni/.config/ironbar/controls.sh wifi-tui"
+on_click = "popup:toggle"
+on_click_right = "!/home/oni/.config/ironbar/controls.sh wifi-toggle-power"
+
+[[end.popup]]
+type = "box"
+orientation = "vertical"
+class = "popup-wifi-box"
+
+[[end.popup.widgets]]
+type = "box"
+orientation = "horizontal"
+class = "popup-header"
+widgets = [
+  { type = "label", class = "popup-title", label = "Wi-Fi" },
+  { type = "button", class = "popup-toggle-btn", label = "#wifi_toggle_label", on_click = "!/home/oni/.config/ironbar/controls.sh wifi-toggle-power" },
+  { type = "button", class = "popup-icon-btn", label = "󰑐", on_click = "!/home/oni/.config/ironbar/controls.sh wifi-refresh" },
+]
+
+[[end.popup.widgets]]
+type = "label"
+class = "status-message"
+justify = "left"
+label = "#wifi_status_msg"
+show_if = "#wifi_status_show"
+transition_type = "none"
+
+[[end.popup.widgets]]
+type = "button"
+name = "wifi-item-1"
+class = "popup-list-item"
+label = "#wifi_item_1_label"
+show_if = "#wifi_item_1_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh wifi-connect 1"
+
+[[end.popup.widgets]]
+type = "button"
+name = "wifi-item-2"
+class = "popup-list-item"
+label = "#wifi_item_2_label"
+show_if = "#wifi_item_2_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh wifi-connect 2"
+
+[[end.popup.widgets]]
+type = "button"
+name = "wifi-item-3"
+class = "popup-list-item"
+label = "#wifi_item_3_label"
+show_if = "#wifi_item_3_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh wifi-connect 3"
+
+[[end.popup.widgets]]
+type = "button"
+name = "wifi-item-4"
+class = "popup-list-item"
+label = "#wifi_item_4_label"
+show_if = "#wifi_item_4_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh wifi-connect 4"
+
+[[end.popup.widgets]]
+type = "button"
+name = "wifi-item-5"
+class = "popup-list-item"
+label = "#wifi_item_5_label"
+show_if = "#wifi_item_5_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh wifi-connect 5"
+
+[[end.popup.widgets]]
+type = "button"
+name = "wifi-item-6"
+class = "popup-list-item"
+label = "#wifi_item_6_label"
+show_if = "#wifi_item_6_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh wifi-connect 6"
+
+[[end.popup.widgets]]
+type = "button"
+name = "wifi-advanced-btn"
+class = "popup-footer-btn"
+label = "󰒓  Advanced..."
+on_click = "!/home/oni/.config/ironbar/controls.sh wifi-advanced"
 
 [[end]]
 type = "custom"
 name = "bluetooth"
 class = "bar-icon item-bluetooth"
-tooltip = "{{5000:/home/oni/.config/ironbar/controls.sh bluetooth-summary}}"
+tooltip = "{{3000:/home/oni/.config/ironbar/controls.sh bluetooth-summary}}"
 
 [[end.bar]]
 type = "button"
 name = "bluetooth-btn"
-label = "{{5000:/home/oni/.config/ironbar/controls.sh bluetooth-icon}}"
+label = "{{3000:/home/oni/.config/ironbar/controls.sh bluetooth-icon}}"
 orientation = "horizontal"
-on_click = "!/home/oni/.config/ironbar/controls.sh bluetooth"
+on_click = "popup:toggle"
+on_click_right = "!/home/oni/.config/ironbar/controls.sh bt-toggle-power"
+
+[[end.popup]]
+type = "box"
+orientation = "vertical"
+class = "popup-bt-box"
+
+[[end.popup.widgets]]
+type = "box"
+orientation = "horizontal"
+class = "popup-header"
+widgets = [
+  { type = "label", class = "popup-title", label = "Bluetooth" },
+  { type = "button", class = "popup-toggle-btn", label = "#bt_toggle_label", on_click = "!/home/oni/.config/ironbar/controls.sh bt-toggle-power" },
+]
+
+[[end.popup.widgets]]
+type = "label"
+class = "status-message"
+justify = "left"
+label = "#bt_status_msg"
+show_if = "#bt_status_show"
+transition_type = "none"
+
+[[end.popup.widgets]]
+type = "button"
+name = "bt-item-1"
+class = "popup-list-item"
+label = "#bt_item_1_label"
+show_if = "#bt_item_1_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh bt-device-toggle 1"
+
+[[end.popup.widgets]]
+type = "button"
+name = "bt-item-2"
+class = "popup-list-item"
+label = "#bt_item_2_label"
+show_if = "#bt_item_2_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh bt-device-toggle 2"
+
+[[end.popup.widgets]]
+type = "button"
+name = "bt-item-3"
+class = "popup-list-item"
+label = "#bt_item_3_label"
+show_if = "#bt_item_3_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh bt-device-toggle 3"
+
+[[end.popup.widgets]]
+type = "button"
+name = "bt-item-4"
+class = "popup-list-item"
+label = "#bt_item_4_label"
+show_if = "#bt_item_4_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh bt-device-toggle 4"
+
+[[end.popup.widgets]]
+type = "button"
+name = "bt-item-5"
+class = "popup-list-item"
+label = "#bt_item_5_label"
+show_if = "#bt_item_5_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh bt-device-toggle 5"
+
+[[end.popup.widgets]]
+type = "button"
+name = "bt-item-6"
+class = "popup-list-item"
+label = "#bt_item_6_label"
+show_if = "#bt_item_6_show"
+transition_type = "none"
+on_click = "!/home/oni/.config/ironbar/controls.sh bt-device-toggle 6"
+
+[[end.popup.widgets]]
+type = "button"
+name = "bt-advanced-btn"
+class = "popup-footer-btn"
+label = "󰂯  Manage devices..."
+on_click = "!/home/oni/.config/ironbar/controls.sh bluetooth-advanced"
 
 [[end]]
 type = "custom"

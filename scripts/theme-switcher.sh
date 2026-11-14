@@ -110,6 +110,8 @@ restart_ironbar() {
   if command -v ironbar >/dev/null 2>&1; then
     ironbar var set tray_open false >/dev/null 2>&1 || true
     ironbar var set tray_arrow '󰅀' >/dev/null 2>&1 || true
+    /etc/nixos/home/dotfiles/ironbar/controls.sh wifi-sync >/dev/null 2>&1 || true
+    /etc/nixos/home/dotfiles/ironbar/controls.sh bt-sync >/dev/null 2>&1 || true
   fi
 }
 

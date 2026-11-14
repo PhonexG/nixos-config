@@ -30,6 +30,7 @@ window.thunar .standard-view,
 scrolledwindow,
 treeview.view,
 iconview.view,
+exo-icon-view.view,
 listview,
 flowbox,
 textview,
@@ -38,27 +39,20 @@ textview text {
   color: @fg_primary;
 }
 
-scrolledwindow.frame {
-  border: 1px solid @border_subtle;
-  border-radius: 6px;
+scrolledwindow,
+scrolledwindow.frame,
+window.thunar scrolledwindow,
+window.thunar .standard-view,
+.thunar .standard-view:focus-within {
+  border: none;
+  box-shadow: none;
 }
 
-/* Headerbar, toolbars, path-bar, sidebar, and statusbar (#252a34) */
+/* Headerbar, menubar, toolbars, path-bar, sidebar, and statusbar (#252a34, seamless) */
 headerbar,
-.titlebar {
-  background-color: @bg_surface;
-  background-image: none;
-  color: @fg_primary;
-  border-bottom: 1px solid @border_subtle;
-}
-
-headerbar:backdrop,
-.titlebar:backdrop {
-  background-color: @bg_surface;
-  color: @fg_muted;
-  border-bottom: 1px solid @border_subtle;
-}
-
+.titlebar,
+menubar,
+.menubar,
 toolbar,
 .toolbar,
 .primary-toolbar,
@@ -67,7 +61,34 @@ actionbar {
   background-color: @bg_surface;
   background-image: none;
   color: @fg_primary;
-  border-bottom: 1px solid @border_subtle;
+}
+
+headerbar:backdrop,
+.titlebar:backdrop {
+  background-color: @bg_surface;
+  background-image: none;
+  color: @fg_muted;
+  border: none;
+  box-shadow: none;
+}
+
+headerbar,
+.titlebar,
+menubar,
+.menubar,
+toolbar,
+.toolbar,
+.primary-toolbar,
+.location-bar,
+.path-bar,
+.path-bar > box,
+actionbar,
+statusbar,
+statusbar frame,
+window.thunar statusbar {
+  border: none;
+  box-shadow: none;
+  background-image: none;
 }
 
 placessidebar,
@@ -89,21 +110,28 @@ placesview list row {
 placessidebar,
 placesview,
 .sidebar,
+.thunar .sidebar,
+.shortcuts-pane,
 .thunar .shortcuts-pane {
-  border-right: 1px solid @border_subtle;
+  border: none;
+  box-shadow: none;
 }
 
-paned > separator {
-  background-color: @border_subtle;
+paned > separator,
+paned > separator.wide {
+  background-color: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
   min-width: 1px;
   min-height: 1px;
 }
 
 statusbar,
-statusbar frame {
+statusbar frame,
+window.thunar statusbar {
   background-color: @bg_surface;
   color: @fg_muted;
-  border-top: 1px solid @border_subtle;
 }
 
 /* Buttons, path-bar, toolbar buttons, and entries */
@@ -131,20 +159,32 @@ spinbutton {
   caret-color: @accent_secondary;
 }
 
-/* Hover and active states (#2a303c) */
-button:hover,
+/* Hover and active states */
+button:hover {
+  background-color: @bg_hover;
+  color: @fg_primary;
+}
+
 placessidebar row:hover,
 placesview row:hover,
+.sidebar row:hover,
+.shortcuts-pane row:hover,
+.shortcuts-pane treeview.view:hover,
+.thunar .shortcuts-pane treeview.view:hover,
 listview row:hover,
 treeview.view:hover,
 treeview.view row:hover,
 iconview.view:hover,
+exo-icon-view.view:hover,
 flowboxchild:hover,
 menuitem:hover,
 modelbutton:hover,
 popover list row:hover {
-  background-color: @bg_hover;
+  background-color: alpha(#cfd6e2, 0.07);
   color: @fg_primary;
+  border: none;
+  border-radius: 6px;
+  box-shadow: none;
 }
 
 button:active,
@@ -160,8 +200,7 @@ entry:focus,
 entry:focus-within,
 spinbutton:focus-within,
 button:focus,
-button:focus-visible,
-.thunar .standard-view:focus-within {
+button:focus-visible {
   border: 1px solid @accent_primary;
   border-radius: 6px;
 }
@@ -300,21 +339,48 @@ toolbar toolitem > button:focus-visible,
   outline: none;
 }
 
-/* Selection states (#333b49 fill, #88a4d4 accent border, #eceff4 text) */
+/* Selection states — main view borderless pill */
 :selected,
 row:selected,
-placessidebar row:selected,
-placesview row:selected,
+window.thunar .standard-view :selected,
+window.thunar .standard-view .view:selected,
+.thunar .view:selected,
 treeview.view:selected,
 treeview.view row:selected,
 iconview.view:selected,
+iconview:selected,
+exo-icon-view.view:selected,
 listview row:selected,
 flowboxchild:selected,
 .view:selected {
-  background-color: @bg_selected;
-  color: @fg_selected;
-  border: 1px solid @accent_primary;
+  background-color: alpha(#88a4d4, 0.20);
+  color: #eceff4;
+  border: none;
+  border-radius: 8px;
+  box-shadow: none;
+  outline: none;
+}
+
+/* Sidebar selection — subtle pill with 3px left accent indicator */
+placessidebar row:selected,
+placesview row:selected,
+placessidebar list row:selected,
+placesview list row:selected,
+.sidebar row:selected,
+.shortcuts-pane row:selected,
+.shortcuts-pane .view:selected,
+.shortcuts-pane treeview.view:selected,
+.thunar .sidebar .view:selected,
+.thunar .shortcuts-pane .view:selected,
+.thunar .sidebar treeview.view:selected,
+.thunar .shortcuts-pane treeview.view:selected {
+  background-color: alpha(#88a4d4, 0.16);
+  color: #eceff4;
+  border: none;
   border-radius: 6px;
+  margin: 1px 6px;
+  box-shadow: inset 3px 0 0 #88a4d4;
+  outline: none;
 }
 
 rubberband,
