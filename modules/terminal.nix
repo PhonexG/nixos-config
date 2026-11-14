@@ -17,6 +17,7 @@ in
     EDITOR = "micro";
     VISUAL = "micro";
     TERMINAL = "kitty";
+    STARSHIP_CONFIG = "/home/oni/.config/themes/current/starship.toml";
   };
 
   programs.fish = {
@@ -34,13 +35,6 @@ in
       set -gx NIX_SSL_CERT_FILE /etc/ssl/certs/ca-bundle.crt
 
       fish_add_path $HOME/.local/bin
-
-      set -g fish_color_autosuggestion brblack
-      set -g fish_color_command blue
-      set -g fish_color_error red
-      set -g fish_pager_color_prefix brcyan --bold
-      set -g fish_pager_color_description yellow
-      set -g fish_pager_color_selected_background --background=brblack
     '';
 
     shellAliases = {

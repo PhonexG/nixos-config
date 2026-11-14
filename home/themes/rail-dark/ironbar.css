@@ -1,0 +1,372 @@
+/* Rail Dark theme for Ironbar — vertical left-edge minimalist rail */
+@define-color bg_base #1e222a;
+@define-color bg_surface #252a34;
+@define-color bg_hover #2e3440;
+@define-color border_subtle #3b4252;
+@define-color accent_primary #88a4d4;
+@define-color accent_secondary #88c0d0;
+@define-color fg_primary #cfd6e2;
+@define-color fg_muted #8b95a7;
+@define-color status_ok #a3be8c;
+@define-color status_warn #ebcb8b;
+@define-color status_err #bf616a;
+
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 12px;
+    font-weight: normal;
+    color: @fg_primary;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background-image: none;
+    outline: none;
+    min-height: 0;
+}
+
+window,
+.background {
+    background-color: transparent;
+}
+
+#bar {
+    background-color: @bg_surface;
+    border-right: 1px solid @border_subtle;
+    padding: 4px 0;
+    min-width: 36px;
+}
+
+#bar #start,
+#bar #center,
+#bar #end {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+#bar button {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    min-width: 28px;
+    min-height: 28px;
+    margin: 2px 4px;
+    padding: 0;
+}
+
+#bar button:hover,
+#bar button:active,
+#bar button:checked {
+    background-color: @bg_hover;
+}
+
+#bar .bar-icon,
+#bar .item-tray-toggle {
+    margin: 0;
+    padding: 0;
+}
+
+#bar .bar-icon label,
+#tray-toggle-btn label {
+    font-size: 15px;
+    color: @fg_primary;
+}
+
+#bar .item-launcher label {
+    color: @accent_primary;
+}
+
+#bar button:hover label {
+    color: @accent_primary;
+}
+
+/* Vertical tray drawer */
+#bar .tray {
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+#bar .tray button {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    min-width: 28px;
+    min-height: 28px;
+    margin: 2px 4px;
+    padding: 0;
+}
+
+#bar .tray button:hover,
+#bar .tray button:active,
+#bar .tray button:checked {
+    background-color: @bg_hover;
+}
+
+.tray .tray-placeholder {
+    color: @fg_muted;
+    font-size: 11px;
+    padding: 2px;
+}
+
+/* Center upright date & time */
+#bar .item-clock {
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+#bar #clock-btn {
+    background-color: transparent;
+    border: none;
+    border-radius: 6px;
+    min-width: 28px;
+    margin: 2px 4px;
+    padding: 4px 0;
+}
+
+#bar #clock-btn:hover,
+#bar #clock-btn:active {
+    background-color: @bg_hover;
+}
+
+#bar .item-clock label,
+#bar #clock-btn label {
+    font-size: 11px;
+    color: @fg_primary;
+    padding: 0;
+    margin: 0;
+}
+
+/* Popups, context menus, and tooltips */
+menu,
+popover,
+.popup {
+    background-color: @bg_surface;
+    color: @fg_primary;
+    border: 1px solid @border_subtle;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+menuitem {
+    border-radius: 6px;
+    padding: 5px 8px;
+}
+
+menuitem:hover {
+    background-color: @bg_hover;
+}
+
+tooltip,
+tooltip.background {
+    background-color: @bg_surface;
+    border: 1px solid @border_subtle;
+    border-radius: 8px;
+    padding: 4px 6px;
+    color: @fg_primary;
+}
+
+scale trough {
+    background-color: @bg_hover;
+    border-radius: 99px;
+    min-width: 4px;
+    min-height: 4px;
+}
+
+scale highlight {
+    background-color: @accent_primary;
+    border-radius: 99px;
+    min-width: 4px;
+    min-height: 4px;
+}
+
+scale slider {
+    background-color: @fg_primary;
+    border-radius: 99px;
+    min-width: 10px;
+    min-height: 10px;
+    margin: -3px;
+}
+
+.popup switch {
+    font-size: 0;
+    color: transparent;
+    background-color: @bg_hover;
+    border: 1px solid @border_subtle;
+    border-radius: 8px;
+    min-width: 32px;
+    min-height: 16px;
+}
+
+.popup switch:checked {
+    background-color: @accent_primary;
+    border-color: @accent_primary;
+}
+
+.popup switch slider {
+    background-color: @fg_primary;
+    border-radius: 8px;
+    min-width: 12px;
+    min-height: 12px;
+}
+
+/* Shared popup controls */
+.popup button {
+    background-color: @bg_hover;
+    border: 1px solid @border_subtle;
+    border-radius: 6px;
+    padding: 6px 10px;
+    min-height: 18px;
+}
+
+.popup button:hover,
+.popup button:focus {
+    background-color: @bg_hover;
+    border-color: @accent_primary;
+}
+
+.popup button:disabled {
+    color: @fg_muted;
+}
+
+.popup button.connected {
+    border: 1px solid @accent_primary;
+}
+
+.popup-title {
+    color: @accent_primary;
+    font-weight: bold;
+    padding: 0 0 8px;
+}
+
+.popup entry {
+    background-color: @bg_base;
+    border: 1px solid @border_subtle;
+    border-radius: 6px;
+    padding: 8px;
+    caret-color: @fg_primary;
+}
+
+.popup entry:focus {
+    border-color: @accent_primary;
+}
+
+.popup .status-message {
+    color: @fg_muted;
+    font-size: 11px;
+}
+
+.popup .stats {
+    min-width: 220px;
+    padding: 6px 4px;
+}
+
+/* Volume popup */
+.popup-volume {
+    min-width: 210px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid @border_subtle;
+    background-color: @bg_surface;
+}
+
+.popup-volume .device-box,
+.popup-volume .app-box {
+    padding: 4px;
+}
+
+.popup-volume .apps-box {
+    border-top: 1px solid @border_subtle;
+    padding-top: 8px;
+}
+
+.popup-volume combobox,
+.popup-volume .device-selector,
+.popup-volume combobox button,
+.popup-volume .device-selector button {
+    font-size: 11px;
+    min-height: 26px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background-color: @bg_hover;
+    border: 1px solid @border_subtle;
+    color: @fg_primary;
+}
+
+.popup-volume combobox cellview {
+    font-size: 11px;
+}
+
+.popup-volume .slider,
+.popup-volume scale {
+    padding: 6px 0;
+}
+
+.popup-volume scale value {
+    font-size: 11px;
+    font-weight: bold;
+    color: @fg_primary;
+    margin-bottom: 4px;
+}
+
+.popup-volume scale trough {
+    background-color: @bg_hover;
+    border-radius: 99px;
+    min-width: 6px;
+    min-height: 100px;
+}
+
+.popup-volume scale highlight,
+.popup-volume scale fill {
+    background-color: @accent_primary;
+    border-radius: 99px;
+    min-width: 6px;
+    min-height: 6px;
+}
+
+.popup-volume scale slider {
+    background-color: @fg_primary;
+    border: 2px solid @accent_primary;
+    border-radius: 99px;
+    min-width: 12px;
+    min-height: 12px;
+    margin: -4px;
+}
+
+.popup-volume .btn-mute {
+    min-width: 32px;
+    min-height: 32px;
+    padding: 0;
+    margin: 4px 78px 0;
+    border-radius: 6px;
+    background-color: @bg_hover;
+    border: 1px solid @border_subtle;
+    font-size: 15px;
+}
+
+.popup-volume .btn-mute:hover,
+.popup-volume .btn-mute:checked {
+    background-color: @accent_primary;
+    color: @bg_base;
+    border-color: @accent_primary;
+}
+
+.popup-volume .btn-mute:hover label,
+.popup-volume .btn-mute:checked label {
+    color: @bg_base;
+}
+
+scrollbar trough {
+    background-color: @bg_base;
+    border-radius: 8px;
+}
+
+scrollbar slider {
+    background-color: @border_subtle;
+    border-radius: 8px;
+    min-width: 4px;
+    min-height: 24px;
+}

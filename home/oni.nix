@@ -19,6 +19,7 @@ in
 {
   imports = [
     ./neovim.nix
+    ./theming.nix
   ];
 
   home = {
@@ -36,6 +37,10 @@ in
       ".icons/default/index.theme".source = ./dotfiles/icons/index.theme;
       ".local/bin/backup-system.sh" = {
         source = ../scripts/backup-system.sh;
+        executable = true;
+      };
+      ".local/bin/blur-adjust.sh" = {
+        source = ../scripts/blur-adjust.sh;
         executable = true;
       };
     };
@@ -60,6 +65,7 @@ in
         "IRONBAR_LOG=error"
         "IRONBAR_FILE_LOG=error"
         # English panel/calendar text without changing the session or Fuzzel locale.
+        "LC_NUMERIC=en_US.UTF-8"
         "LC_TIME=en_US.UTF-8"
         "LC_MESSAGES=en_US.UTF-8"
       ];
@@ -109,9 +115,7 @@ in
     "niri/config.kdl".source = ./dotfiles/niri/config.kdl;
     "niri/wallpapers/default.png".source = ./dotfiles/niri/default.png;
 
-    # Ironbar; colors.css генерується динамічно.
-    "ironbar/config.json".source = ./dotfiles/ironbar/config.json;
-    "ironbar/style.css".source = ./dotfiles/ironbar/style.css;
+    # Ironbar; config.toml та style.css керуються через theming.nix.
     "ironbar/panel-status.py".source = ./dotfiles/ironbar/panel-status.py;
     "ironbar/speaker-status.sh" = {
       source = ./dotfiles/ironbar/speaker-status.sh;
@@ -151,12 +155,10 @@ in
     "wlogout/layout".source = ./dotfiles/wlogout/layout;
     "wlogout/style.css".source = ./dotfiles/wlogout/style.css;
     "hypr/hyprlock.conf".source = ./dotfiles/hypr/hyprlock.conf;
-    "hypr/colors.conf".source = ./dotfiles/hypr/colors.conf;
     "swappy/config".source = ./dotfiles/swappy/config;
 
     # Редактор і командний рядок
     "micro/bindings.json".source = ./dotfiles/micro/bindings.json;
-    "starship.toml".source = ./dotfiles/starship.toml;
 
     # GTK, Thunar та XFCE
     "gtk-3.0/settings.ini".source = ./dotfiles/gtk-3.0/settings.ini;
@@ -171,14 +173,11 @@ in
       source = ./dotfiles/rclone/rclone-autofix.sh;
       executable = true;
     };
+
+    # Mask duplicate XDG autostart tray applets (handled by Ironbar popup controls)
+    "autostart/nm-applet.desktop".text = "[Desktop Entry]\nHidden=true\n";
+    "autostart/blueman.desktop".text = "[Desktop Entry]\nHidden=true\n";
   };
 
   xdg.dataFile."applications/micro.desktop".source = ./dotfiles/applications/micro.desktop;
-
-  dconf.settings."org/gnome/desktop/interface" = {
-    color-scheme = "prefer-dark";
-    gtk-theme = "Adwaita-dark";
-    icon-theme = "Papirus-Dark";
-    cursor-theme = "Bibata-Modern-Ice";
-  };
 }

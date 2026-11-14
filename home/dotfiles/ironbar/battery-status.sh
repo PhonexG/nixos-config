@@ -80,9 +80,9 @@ print_status() {
   local label="$icon ${cap}%"
   [[ "$mode" != --icon ]] || label="$icon"
   if [[ "$status" == "Discharging" ]] && (( cap <= 10 )); then
-    echo "<span foreground=\"#f7768e\">$label</span>"
+    echo "<span foreground=\"#bf616a\">$label</span>"
   elif [[ "$status" == "Discharging" ]] && (( cap <= 20 )); then
-    echo "<span foreground=\"#e0af68\">$label</span>"
+    echo "<span foreground=\"#ebcb8b\">$label</span>"
   else
     echo "$label"
   fi

@@ -1,0 +1,31 @@
+// Rail Dark theme for Niri
+
+layout {
+    gaps 8
+
+    focus-ring {
+        width 2
+        active-color "#88a4d4"
+        inactive-color "#3b4252"
+    }
+
+    border {
+        off
+        width 1
+        active-color "#88a4d4"
+        inactive-color "#3b4252"
+        urgent-color "#bf616a"
+    }
+
+    shadow {
+        softness 24
+        spread 4
+        offset x=0 y=4
+        color "#1e222a"
+    }
+}
+
+window-rule {
+    geometry-corner-radius 8
+    clip-to-geometry true
+}

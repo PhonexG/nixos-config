@@ -1,0 +1,203 @@
+name = "main"
+position = "left"
+anchor_to_edges = true
+layer = "top"
+exclusive_zone = true
+height = 26
+popup_gap = 4
+icon_theme = "Papirus-Dark"
+
+[ironvar_defaults]
+tray_open = "false"
+tray_arrow = "󰅀"
+notifications_status = "Notifications: loading status…"
+
+[margin]
+top = 0
+bottom = 0
+left = 0
+right = 0
+
+[[start]]
+type = "custom"
+name = "launcher"
+class = "bar-icon item-launcher"
+tooltip = "Application launcher"
+
+[[start.bar]]
+type = "button"
+name = "launcher-btn"
+label = ""
+orientation = "horizontal"
+on_click = "!/home/oni/.config/ironbar/controls.sh launcher"
+
+[[center]]
+type = "custom"
+name = "clock"
+class = "item-clock"
+tooltip = "{{30000:LC_TIME=en_US.UTF-8 date +'%A, %d %B %Y'}}"
+
+[[center.bar]]
+type = "button"
+name = "clock-btn"
+orientation = "horizontal"
+justify = "center"
+on_click = "popup:toggle"
+label = "{{5000:LC_TIME=en_US.UTF-8 date +'<span foreground=\"#cfd6e2\" weight=\"bold\">%H%n%M</span>%n<span foreground=\"#3b4252\" size=\"x-small\">──</span>%n<span foreground=\"#8b95a7\" size=\"smaller\">%d%n%m</span>'}}"
+
+[[center.popup]]
+type = "box"
+orientation = "vertical"
+
+[[center.popup.widgets]]
+type = "label"
+class = "popup-title"
+label = "{{30000:LC_TIME=en_US.UTF-8 date +'%A, %d %B %Y'}}"
+
+[[center.popup.widgets]]
+type = "label"
+class = "stats"
+justify = "left"
+label = "{{30000:LC_TIME=en_US.UTF-8 cal}}"
+
+[[end]]
+type = "custom"
+name = "tray-expander"
+class = "item-tray-toggle"
+orientation = "vertical"
+tooltip = "Tray — click to open / close"
+
+[[end.bar]]
+type = "button"
+name = "tray-toggle-btn"
+label = "#tray_arrow"
+orientation = "horizontal"
+on_click = "!/home/oni/.config/ironbar/controls.sh tray-toggle"
+
+[[end.bar]]
+type = "tray"
+name = "tray"
+direction = "vertical"
+icon_size = 16
+show_if = "#tray_open"
+transition_type = "none"
+
+[[end]]
+type = "custom"
+name = "wifi"
+class = "bar-icon item-wifi"
+tooltip = "{{5000:/home/oni/.config/ironbar/controls.sh wifi-summary}}"
+
+[[end.bar]]
+type = "button"
+name = "wifi-btn"
+label = "{{5000:/home/oni/.config/ironbar/controls.sh wifi-icon}}"
+orientation = "horizontal"
+on_click = "!/home/oni/.config/ironbar/controls.sh wifi"
+on_click_right = "!/home/oni/.config/ironbar/controls.sh wifi-tui"
+
+[[end]]
+type = "custom"
+name = "bluetooth"
+class = "bar-icon item-bluetooth"
+tooltip = "{{5000:/home/oni/.config/ironbar/controls.sh bluetooth-summary}}"
+
+[[end.bar]]
+type = "button"
+name = "bluetooth-btn"
+label = "{{5000:/home/oni/.config/ironbar/controls.sh bluetooth-icon}}"
+orientation = "horizontal"
+on_click = "!/home/oni/.config/ironbar/controls.sh bluetooth"
+
+[[end]]
+type = "custom"
+name = "notifications"
+class = "bar-icon item-notifications"
+tooltip = "#notifications_status\nLeft click: notifications · Right click: Do Not Disturb"
+
+[[end.bar]]
+type = "button"
+name = "notifications-btn"
+label = "{{watch:python3 /home/oni/.config/ironbar/notifications.py}}"
+orientation = "horizontal"
+on_click = "!/home/oni/.config/ironbar/controls.sh notifications"
+on_click_right = "!/home/oni/.config/ironbar/controls.sh dnd"
+
+[[end]]
+type = "volume"
+name = "speaker"
+class = "bar-icon item-speaker"
+orientation = "horizontal"
+format = "{icon}"
+max_volume = 100
+tooltip = "{{2000:/home/oni/.config/ironbar/speaker-status.sh --summary}}\nLeft click: mixer · Right click: mute · Wheel: ±5%"
+on_click_right = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+on_scroll_up = "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+on_scroll_down = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+smooth_scroll_speed = 10
+
+[end.icons]
+volume_high = ""
+volume_medium = ""
+volume_low = ""
+muted = ""
+
+[end.truncate]
+mode = "end"
+max_length = 24
+
+[[end]]
+type = "custom"
+name = "cpu"
+class = "bar-icon item-cpu"
+tooltip = "CPU usage"
+
+[[end.bar]]
+type = "button"
+name = "cpu-btn"
+label = "󰍛"
+orientation = "horizontal"
+on_click = "popup:toggle"
+
+[[end.popup]]
+type = "box"
+orientation = "vertical"
+
+[[end.popup.widgets]]
+type = "label"
+class = "popup-title"
+label = "Processor"
+
+[[end.popup.widgets]]
+type = "label"
+class = "stats"
+justify = "left"
+label = "{{watch:python3 /home/oni/.config/ironbar/panel-status.py cpu}}"
+
+[[end]]
+type = "custom"
+name = "battery"
+class = "bar-icon item-battery"
+tooltip = "{{30000:/home/oni/.config/ironbar/battery-status.sh --summary}}"
+
+[[end.bar]]
+type = "button"
+name = "battery-btn"
+label = "{{watch:/home/oni/.config/ironbar/battery-status.sh --icon}}"
+orientation = "horizontal"
+on_click = "popup:toggle"
+
+[[end.popup]]
+type = "box"
+orientation = "vertical"
+
+[[end.popup.widgets]]
+type = "label"
+class = "popup-title"
+label = "Battery"
+
+[[end.popup.widgets]]
+type = "label"
+class = "stats"
+justify = "left"
+label = "{{watch:python3 /home/oni/.config/ironbar/panel-status.py battery}}"

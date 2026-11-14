@@ -12,7 +12,7 @@ def render(event):
     dnd = bool(event.get("dnd", False))
     label = "󰂛" if dnd else "󰂞" if count else "󰂚"
     if dnd:
-        label = f'<span foreground="#a55555">{label}</span>'
+        label = f'<span foreground="#bf616a">{label}</span>'
     tooltip = f"Notifications: {count}\nDo Not Disturb: {'enabled' if dnd else 'disabled'}"
     return label, tooltip
 
@@ -75,7 +75,7 @@ def watch():
                     process.wait()
                 process = None
         if not stopped.is_set():
-            offline = ('<span foreground="#787c99">󰂛</span>', "SwayNC unavailable")
+            offline = ('<span foreground="#8b95a7">󰂛</span>', "SwayNC unavailable")
             if last != offline:
                 print(offline[0], flush=True)
                 publish_tooltip(offline[1])

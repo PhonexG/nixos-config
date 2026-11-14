@@ -53,27 +53,6 @@ layout {
 
     default-column-width { proportion 0.5; }
 
-    focus-ring {
-        width 4
-        active-color "#7fc8ff"
-        inactive-color "#505050"
-    }
-
-    border {
-        off
-        width 4
-        active-color "#ffc87f"
-        inactive-color "#505050"
-        urgent-color "#9b0000"
-    }
-
-    shadow {
-        softness 30
-        spread 5
-        offset x=0 y=5
-        color "#0007"
-    }
-
     struts {
     }
 }
@@ -116,8 +95,12 @@ window-rule {
 }
 
 window-rule {
+    match app-id=r#"^(nmtui-float|nm-connection-editor|\.blueman-manager-wrapped|blueman-manager)$"#
+    open-floating true
+}
+
+window-rule {
     match app-id=r#"^kitty$"#
-    opacity 0.86
     focus-ring {
         off
     }
@@ -143,6 +126,7 @@ binds {
     Mod+X { spawn "~/.config/niri/scripts/menu-control.sh" "power"; }
     Mod+Alt+L { spawn "~/.config/niri/scripts/lock.sh"; }
     Mod+W { spawn "~/.config/niri/scripts/menu-control.sh" "wallpaper"; }
+    Mod+Shift+T { spawn "/etc/nixos/scripts/theme-switcher.sh"; }
     Mod+B { spawn "zen-beta"; }
     Mod+N { spawn "swaync-client" "-t"; }
     Mod+C { spawn "~/.config/niri/scripts/menu-control.sh" "clipboard"; }
@@ -278,6 +262,10 @@ binds {
     Mod+Shift+Minus { set-window-height "-10%"; }
     Mod+Shift+Equal { set-window-height "+10%"; }
 
+    Mod+Alt+Equal { spawn "/etc/nixos/scripts/blur-adjust.sh" "up"; }
+    Mod+Alt+Minus { spawn "/etc/nixos/scripts/blur-adjust.sh" "down"; }
+    Mod+Alt+0     { spawn "/etc/nixos/scripts/blur-adjust.sh" "toggle"; }
+
     Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
@@ -289,3 +277,5 @@ binds {
 
     Mod+Shift+P { power-off-monitors; }
 }
+
+include "/home/oni/.config/themes/current/niri.kdl"

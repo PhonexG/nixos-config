@@ -1,0 +1,49 @@
+add_newline = false
+format = """
+[](accent_primary)[ ](bg:accent_primary fg:bg_base)[](fg:accent_primary bg:bg_surface)[ $directory ](bg:bg_surface fg:fg_primary)[](fg:bg_surface bg:bg_hover)$git_branch$git_status[](fg:bg_hover) $character"""
+right_format = "$cmd_duration$status"
+
+palette = "rail_dark"
+
+[palettes.rail_dark]
+bg_base = "#1e222a"
+bg_surface = "#252a34"
+bg_hover = "#2e3440"
+border_subtle = "#3b4252"
+accent_primary = "#88a4d4"
+accent_secondary = "#88c0d0"
+fg_primary = "#cfd6e2"
+fg_muted = "#8b95a7"
+status_ok = "#a3be8c"
+status_warn = "#ebcb8b"
+status_err = "#bf616a"
+
+[directory]
+style = "bg:bg_surface fg:fg_primary"
+format = "[$path]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+home_symbol = " ~"
+
+[git_branch]
+style = "bg:bg_hover fg:accent_secondary"
+format = "[ $symbol$branch ]($style)"
+symbol = " "
+
+[git_status]
+style = "bg:bg_hover fg:fg_primary"
+format = "[$all_status$ahead_behind ]($style)"
+
+[character]
+success_symbol = "[❯](bold accent_primary)"
+error_symbol = "[❯](bold status_err)"
+
+[cmd_duration]
+min_time = 1000
+format = "[󰔛 $duration]($style) "
+style = "fg:accent_primary"
+
+[status]
+disabled = false
+format = "[✘ $status]($style) "
+style = "fg:status_err"

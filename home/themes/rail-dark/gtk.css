@@ -1,0 +1,380 @@
+/* Rail Dark — GTK3 & GTK4 Theme Overrides (Softer Slate, Thunar-ready, preserves ~/.icons & default fonts) */
+
+@define-color bg_base #1e222a;
+@define-color bg_surface #252a34;
+@define-color bg_hover #2a303c;
+@define-color bg_btn_hover #2e3440;
+@define-color bg_selected #333b49;
+@define-color fg_selected #eceff4;
+@define-color border_subtle #3b4252;
+@define-color accent_primary #88a4d4;
+@define-color accent_secondary #88c0d0;
+@define-color fg_primary #cfd6e2;
+@define-color fg_muted #8b95a7;
+@define-color status_ok #a3be8c;
+@define-color status_warn #ebcb8b;
+@define-color status_err #bf616a;
+
+/* Main windows and file/icon views (#1e222a) */
+window,
+window.background,
+window.thunar,
+dialog,
+.background {
+  background-color: @bg_base;
+  color: @fg_primary;
+}
+
+window.thunar .standard-view,
+.thunar .view,
+scrolledwindow,
+treeview.view,
+iconview.view,
+listview,
+flowbox,
+textview,
+textview text {
+  background-color: @bg_base;
+  color: @fg_primary;
+}
+
+scrolledwindow.frame {
+  border: 1px solid @border_subtle;
+  border-radius: 6px;
+}
+
+/* Headerbar, toolbars, path-bar, sidebar, and statusbar (#252a34) */
+headerbar,
+.titlebar {
+  background-color: @bg_surface;
+  background-image: none;
+  color: @fg_primary;
+  border-bottom: 1px solid @border_subtle;
+}
+
+headerbar:backdrop,
+.titlebar:backdrop {
+  background-color: @bg_surface;
+  color: @fg_muted;
+  border-bottom: 1px solid @border_subtle;
+}
+
+toolbar,
+.toolbar,
+.primary-toolbar,
+.location-bar,
+actionbar {
+  background-color: @bg_surface;
+  background-image: none;
+  color: @fg_primary;
+  border-bottom: 1px solid @border_subtle;
+}
+
+placessidebar,
+placesview,
+.sidebar,
+.shortcuts-pane,
+.shortcuts-pane .view,
+.thunar .sidebar,
+.thunar .shortcuts-pane,
+.thunar .shortcuts-pane treeview.view,
+placessidebar list,
+placessidebar list row,
+placesview list,
+placesview list row {
+  background-color: @bg_surface;
+  color: @fg_primary;
+}
+
+placessidebar,
+placesview,
+.sidebar,
+.thunar .shortcuts-pane {
+  border-right: 1px solid @border_subtle;
+}
+
+paned > separator {
+  background-color: @border_subtle;
+  min-width: 1px;
+  min-height: 1px;
+}
+
+statusbar,
+statusbar frame {
+  background-color: @bg_surface;
+  color: @fg_muted;
+  border-top: 1px solid @border_subtle;
+}
+
+/* Buttons, path-bar, toolbar buttons, and entries */
+button {
+  background-color: @bg_surface;
+  background-image: none;
+  color: @fg_primary;
+  border: 1px solid @border_subtle;
+  border-radius: 6px;
+}
+
+.path-bar,
+.path-bar > box {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+entry,
+spinbutton {
+  background-color: @bg_base;
+  color: @fg_primary;
+  border: 1px solid @border_subtle;
+  border-radius: 6px;
+  caret-color: @accent_secondary;
+}
+
+/* Hover and active states (#2a303c) */
+button:hover,
+placessidebar row:hover,
+placesview row:hover,
+listview row:hover,
+treeview.view:hover,
+treeview.view row:hover,
+iconview.view:hover,
+flowboxchild:hover,
+menuitem:hover,
+modelbutton:hover,
+popover list row:hover {
+  background-color: @bg_hover;
+  color: @fg_primary;
+}
+
+button:active,
+button:checked {
+  background-color: @bg_selected;
+  color: @fg_selected;
+  border: 1px solid @accent_primary;
+  border-radius: 6px;
+}
+
+/* Focus states (1px solid #88a4d4) */
+entry:focus,
+entry:focus-within,
+spinbutton:focus-within,
+button:focus,
+button:focus-visible,
+.thunar .standard-view:focus-within {
+  border: 1px solid @accent_primary;
+  border-radius: 6px;
+}
+
+/* Minimalist ironbar-style toolbar, navigation, and path-bar buttons */
+toolbar button,
+.toolbar button,
+.primary-toolbar button,
+.location-bar button,
+headerbar button,
+window.thunar toolbar button,
+window.thunar .toolbar button,
+window.thunar .location-bar button,
+toolbar toolbutton > button,
+toolbar toolitem > button,
+.toolbar .linked > button,
+.location-bar .linked > button,
+.path-bar button,
+.path-bar .linked > button {
+  background-color: transparent;
+  background-image: none;
+  color: @fg_primary;
+  border: none;
+  border-radius: 6px;
+  box-shadow: none;
+  outline: none;
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  margin: 2px;
+}
+
+toolbar button:hover,
+toolbar button:active,
+toolbar button:checked,
+.toolbar button:hover,
+.toolbar button:active,
+.toolbar button:checked,
+.primary-toolbar button:hover,
+.primary-toolbar button:active,
+.primary-toolbar button:checked,
+.location-bar button:hover,
+.location-bar button:active,
+.location-bar button:checked,
+headerbar button:hover,
+headerbar button:active,
+headerbar button:checked,
+window.thunar toolbar button:hover,
+window.thunar toolbar button:active,
+window.thunar toolbar button:checked,
+window.thunar .toolbar button:hover,
+window.thunar .toolbar button:active,
+window.thunar .toolbar button:checked,
+window.thunar .location-bar button:hover,
+window.thunar .location-bar button:active,
+window.thunar .location-bar button:checked,
+toolbar toolbutton > button:hover,
+toolbar toolbutton > button:active,
+toolbar toolbutton > button:checked,
+toolbar toolitem > button:hover,
+toolbar toolitem > button:active,
+toolbar toolitem > button:checked,
+.toolbar .linked > button:hover,
+.toolbar .linked > button:active,
+.toolbar .linked > button:checked,
+.location-bar .linked > button:hover,
+.location-bar .linked > button:active,
+.location-bar .linked > button:checked,
+.path-bar button:hover,
+.path-bar button:active,
+.path-bar button:checked,
+.path-bar button.current-dir,
+.path-bar .linked > button:hover,
+.path-bar .linked > button:active,
+.path-bar .linked > button:checked {
+  background-color: @bg_btn_hover;
+  background-image: none;
+  color: @fg_primary;
+  border: none;
+  border-radius: 6px;
+  box-shadow: none;
+  outline: none;
+}
+
+toolbar button:disabled,
+.toolbar button:disabled,
+.primary-toolbar button:disabled,
+.location-bar button:disabled,
+headerbar button:disabled,
+window.thunar toolbar button:disabled,
+window.thunar .toolbar button:disabled,
+window.thunar .location-bar button:disabled,
+toolbar toolbutton > button:disabled,
+toolbar toolitem > button:disabled,
+.toolbar .linked > button:disabled,
+.location-bar .linked > button:disabled,
+.path-bar button:disabled,
+.path-bar .linked > button:disabled {
+  background-color: transparent;
+  background-image: none;
+  color: @fg_muted;
+  border: none;
+  box-shadow: none;
+}
+
+toolbar button:focus,
+toolbar button:focus-visible,
+.toolbar button:focus,
+.toolbar button:focus-visible,
+.primary-toolbar button:focus,
+.primary-toolbar button:focus-visible,
+.location-bar button:focus,
+.location-bar button:focus-visible,
+headerbar button:focus,
+headerbar button:focus-visible,
+window.thunar toolbar button:focus,
+window.thunar toolbar button:focus-visible,
+window.thunar .toolbar button:focus,
+window.thunar .toolbar button:focus-visible,
+window.thunar .location-bar button:focus,
+window.thunar .location-bar button:focus-visible,
+toolbar toolbutton > button:focus,
+toolbar toolbutton > button:focus-visible,
+toolbar toolitem > button:focus,
+toolbar toolitem > button:focus-visible,
+.toolbar .linked > button:focus,
+.toolbar .linked > button:focus-visible,
+.location-bar .linked > button:focus,
+.location-bar .linked > button:focus-visible,
+.path-bar button:focus,
+.path-bar button:focus-visible,
+.path-bar .linked > button:focus,
+.path-bar .linked > button:focus-visible {
+  border: none;
+  box-shadow: none;
+  outline: none;
+}
+
+/* Selection states (#333b49 fill, #88a4d4 accent border, #eceff4 text) */
+:selected,
+row:selected,
+placessidebar row:selected,
+placesview row:selected,
+treeview.view:selected,
+treeview.view row:selected,
+iconview.view:selected,
+listview row:selected,
+flowboxchild:selected,
+.view:selected {
+  background-color: @bg_selected;
+  color: @fg_selected;
+  border: 1px solid @accent_primary;
+  border-radius: 6px;
+}
+
+rubberband,
+.rubberband {
+  background-color: alpha(@accent_primary, 0.18);
+  border: 1px solid @accent_primary;
+  border-radius: 6px;
+}
+
+/* Popovers, menus, and tooltips */
+popover,
+popover.background,
+popover > contents,
+menu,
+.menu,
+.context-menu,
+tooltip,
+tooltip.background {
+  background-color: @bg_surface;
+  color: @fg_primary;
+  border: 1px solid @border_subtle;
+  border-radius: 6px;
+}
+
+menuitem,
+modelbutton {
+  border-radius: 6px;
+}
+
+/* Scrollbars */
+scrollbar,
+scrollbar trough {
+  background-color: @bg_base;
+}
+
+scrollbar slider {
+  background-color: @border_subtle;
+  border-radius: 6px;
+  min-width: 6px;
+  min-height: 6px;
+}
+
+scrollbar slider:hover {
+  background-color: @fg_muted;
+}
+
+scrollbar slider:active {
+  background-color: @accent_primary;
+}
+
+/* Status accents */
+.success {
+  color: @status_ok;
+}
+
+.warning {
+  color: @status_warn;
+}
+
+.error,
+.destructive-action {
+  color: @status_err;
+}
