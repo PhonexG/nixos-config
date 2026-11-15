@@ -20,6 +20,11 @@
     "ironbar/style.css".source =
       config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/themes/current/ironbar.css";
 
+    "swaync/config.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/themes/current/swaync.json";
+    "swaync/style.css".source =
+      config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.config/themes/current/swaync.css";
+
     "gtk-3.0/gtk.css".text = ''
       @import url("file://${config.home.homeDirectory}/.config/themes/current/gtk.css");
     '';

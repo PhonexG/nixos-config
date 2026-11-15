@@ -6,6 +6,8 @@
 - **/Thumbs.db
 - **/desktop.ini
 - **/*.tmp
+- **/*.swp
+- **/*.swo
 - **/~$*
 - **/*~
 - **/.#*
@@ -40,10 +42,12 @@
 # Rust (Cargo)
 - **/target/**
 
-# Scala & Java (sbt, Metals, Bloop)
+# Scala, Java & Gradle (sbt, Metals, Bloop, Gradle)
 - **/.metals/**
 - **/.bloop/**
 - **/.bsp/**
+- **/.scala-build/**
+- **/.gradle/**
 - **/*.class
 
 # C / C++ (компіляція, бінарники, CMake)
@@ -58,14 +62,22 @@
 
 # Python & оточення
 - **/.venv/**
+- **/venv/**
 - **/env/**
 - **/__pycache__/**
 - **/*.pyc
 - **/.pytest_cache/**
 - **/.ruff_cache/**
 
-# Веб-залежності
+# Веб-залежності, збірки та Flutter/Dart
 - **/node_modules/**
+- **/dist/**
+- **/.next/**
+- **/.dart_tool/**
+
+# Локальні запуски, CI-логи та артефакти збірки
+- **/.local-runs/**
+- **/.ci-logs/**
 
 # Кеші додатків, браузерів та розпаковані бекапи
 - **/system-backup_*/**
@@ -76,3 +88,20 @@
 - **/ShaderCache/**
 - **/IndexedDB/**
 - **/Service Worker/**
+
+# Кореневі та будь-якої глибини збіги (шаблони без **/ також покривають корінь)
+- .local-runs/**
+- node_modules/**
+- .venv/**
+- venv/**
+- __pycache__/**
+- target/**
+- dist/**
+- build/**
+- .next/**
+- .gradle/**
+- .cache/**
+- *.tmp
+- *.swp
+- *.swo
+- *.crdownload

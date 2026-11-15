@@ -339,41 +339,71 @@ toolbar toolitem > button:focus-visible,
   outline: none;
 }
 
-/* Selection states — main view borderless pill */
+/* Selection states — main view borderless pill (translucent, never covers icons) */
 :selected,
+:selected:focus,
 row:selected,
+row:selected:focus,
 window.thunar .standard-view :selected,
+window.thunar .standard-view :selected:focus,
 window.thunar .standard-view .view:selected,
+window.thunar .standard-view .view:selected:focus,
 .thunar .view:selected,
+.thunar .view:selected:focus,
 treeview.view:selected,
+treeview.view:selected:focus,
 treeview.view row:selected,
+treeview.view row:selected:focus,
 iconview.view:selected,
+iconview.view:selected:focus,
 iconview:selected,
+iconview:selected:focus,
+ExoIconView:selected,
+ExoIconView:selected:focus,
+ThunarIconView:selected,
+ThunarIconView:selected:focus,
 exo-icon-view.view:selected,
+exo-icon-view.view:selected:focus,
 listview row:selected,
+listview row:selected:focus,
 flowboxchild:selected,
-.view:selected {
-  background-color: alpha(#88a4d4, 0.20);
+flowboxchild:selected:focus,
+.view:selected,
+.view:selected:focus {
+  background-color: rgba(136, 164, 212, 0.22);
+  background-image: none;
   color: #eceff4;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: none;
   outline: none;
 }
 
 /* Sidebar selection — subtle pill with 3px left accent indicator */
 placessidebar row:selected,
+placessidebar row:selected:focus,
 placesview row:selected,
+placesview row:selected:focus,
 placessidebar list row:selected,
+placessidebar list row:selected:focus,
 placesview list row:selected,
+placesview list row:selected:focus,
 .sidebar row:selected,
+.sidebar row:selected:focus,
 .shortcuts-pane row:selected,
+.shortcuts-pane row:selected:focus,
 .shortcuts-pane .view:selected,
+.shortcuts-pane .view:selected:focus,
 .shortcuts-pane treeview.view:selected,
+.shortcuts-pane treeview.view:selected:focus,
 .thunar .sidebar .view:selected,
+.thunar .sidebar .view:selected:focus,
 .thunar .shortcuts-pane .view:selected,
+.thunar .shortcuts-pane .view:selected:focus,
 .thunar .sidebar treeview.view:selected,
-.thunar .shortcuts-pane treeview.view:selected {
+.thunar .sidebar treeview.view:selected:focus,
+.thunar .shortcuts-pane treeview.view:selected,
+.thunar .shortcuts-pane treeview.view:selected:focus {
   background-color: alpha(#88a4d4, 0.16);
   color: #eceff4;
   border: none;
@@ -383,11 +413,31 @@ placesview list row:selected,
   outline: none;
 }
 
+/* Translucent, trail-free rubberband (0px radius + no shadow prevent Wayland dirty-rect pixel trails) */
 rubberband,
-.rubberband {
-  background-color: alpha(@accent_primary, 0.18);
-  border: 1px solid @accent_primary;
-  border-radius: 6px;
+.rubberband,
+ExoIconView.rubberband,
+ThunarIconView.rubberband,
+iconview rubberband,
+iconview.view.rubberband,
+treeview.view rubberband,
+flowbox rubberband,
+.content-view rubberband,
+.content-view .rubberband,
+.view.rubberband,
+.thunar .rubberband,
+.thunar .view.rubberband,
+window.thunar .rubberband,
+window.thunar .view.rubberband,
+window.thunar .standard-view .rubberband,
+window.thunar .standard-view .view.rubberband {
+  background-color: rgba(136, 164, 212, 0.16);
+  background-image: none;
+  border: 1px solid rgba(136, 164, 212, 0.75);
+  border-radius: 0px;
+  box-shadow: none;
+  outline: none;
+  margin: 0;
 }
 
 /* Popovers, menus, and tooltips */

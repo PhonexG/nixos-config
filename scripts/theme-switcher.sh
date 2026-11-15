@@ -39,6 +39,48 @@ ensure_gtk_css() {
   printf '%s\n' "$import_line" > "$target"
 }
 
+wire_swaync() {
+  local swaync_dir="$HOME/.config/swaync"
+  if [[ -L "$swaync_dir" ]]; then
+    rm -f "$swaync_dir"
+  fi
+  mkdir -p "$swaync_dir"
+
+  # Remove any read-only Nix-store symlinks before relinking to the active theme.
+  rm -f "$swaync_dir/config.json" "$swaync_dir/style.css"
+  if [[ -f "$CURRENT_LINK/swaync.json" ]]; then
+    ln -sfn "$CURRENT_LINK/swaync.json" "$swaync_dir/config.json"
+  elif [[ -f "/etc/nixos/home/dotfiles/swaync/config.json" ]]; then
+    ln -sfn "/etc/nixos/home/dotfiles/swaync/config.json" "$swaync_dir/config.json"
+  fi
+
+  if [[ -f "$CURRENT_LINK/swaync.css" ]]; then
+    ln -sfn "$CURRENT_LINK/swaync.css" "$swaync_dir/style.css"
+  elif [[ -f "/etc/nixos/home/dotfiles/swaync/style.css" ]]; then
+    ln -sfn "/etc/nixos/home/dotfiles/swaync/style.css" "$swaync_dir/style.css"
+  fi
+}
+
+is_swaync_running() {
+  pgrep -x swaync >/dev/null 2>&1 \
+    || pgrep -x '.swaync-wrapped' >/dev/null 2>&1 \
+    || pgrep -x '.swaync-wrappe' >/dev/null 2>&1 \
+    || pgrep -f '(^|/)(\.)?swaync(-wrapped)?([[:space:]]|$)' >/dev/null 2>&1
+}
+
+reload_swaync() {
+  if is_swaync_running; then
+    if command -v swaync-client >/dev/null 2>&1; then
+      swaync-client -sw -R >/dev/null 2>&1 || true
+      swaync-client -sw -rs >/dev/null 2>&1 || true
+    fi
+  elif command -v swaync >/dev/null 2>&1 && [[ -n "${WAYLAND_DISPLAY:-}" ]]; then
+    nohup swaync >/dev/null 2>&1 &
+    disown || true
+    sleep 0.3
+  fi
+}
+
 find_ironbar_pids() {
   {
     pgrep -x ironbar 2>/dev/null || true
@@ -53,8 +95,14 @@ kill_ironbar() {
 
 restart_ironbar() {
   mkdir -p "$HOME/.config/autostart"
-  printf '[Desktop Entry]\nHidden=true\n' > "$HOME/.config/autostart/nm-applet.desktop"
-  printf '[Desktop Entry]\nHidden=true\n' > "$HOME/.config/autostart/blueman.desktop"
+  local f
+  for f in "$HOME/.config/autostart/nm-applet.desktop" "$HOME/.config/autostart/blueman.desktop"; do
+    if grep -Fqx 'Hidden=true' "$f" 2>/dev/null; then
+      continue
+    fi
+    rm -f "$f"
+    printf '[Desktop Entry]\nHidden=true\n' > "$f"
+  done
   pkill -f 'nm-applet|blueman-applet' >/dev/null 2>&1 || true
 
   local restarted=0
@@ -157,6 +205,7 @@ apply_theme() {
 
   ensure_gtk_css "$HOME/.config/gtk-3.0/gtk.css"
   ensure_gtk_css "$HOME/.config/gtk-4.0/gtk.css"
+  wire_swaync
 
   # 1) Niri
   if command -v niri >/dev/null 2>&1; then
@@ -185,6 +234,9 @@ apply_theme() {
   fi
 
   # 8) Hyprlock reads source = ~/.config/themes/current/hyprlock.conf on next lock.
+
+  # 9) SwayNC
+  reload_swaync
 
   if command -v notify-send >/dev/null 2>&1; then
     notify-send 'Theme' "Applied $theme" >/dev/null 2>&1 || true

@@ -143,9 +143,9 @@ in
     "swayosd/config.toml".source = ./dotfiles/swayosd/config.toml;
     "swayosd/style.css".source = ./dotfiles/swayosd/style.css;
 
-    # SwayNC, Fuzzel і Kitty
-    "swaync/config.json".source = ./dotfiles/swaync/config.json;
-    "swaync/style.css".source = ./dotfiles/swaync/style.css;
+    # SwayNC; config.json та style.css керуються через theming.nix.
+
+    # Fuzzel і Kitty
     "fuzzel/fuzzel.ini".source = ./dotfiles/fuzzel/fuzzel.ini;
     "kitty/kitty.conf".source = ./dotfiles/kitty/kitty.conf;
     "kitty/launch-actions.conf".source = ./dotfiles/kitty/launch-actions.conf;
