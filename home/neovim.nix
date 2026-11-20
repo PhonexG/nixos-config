@@ -30,7 +30,7 @@ in
     extraLuaConfig = ''
       vim.g.mapleader = " "
 
-      -- Шляхи до плагінів, установлених через Nix.
+      -- Paths to plugins installed via Nix.
       vim.g.nix_plugins = {
         tokyonight = "${vp.tokyonight-nvim}",
         telescope = "${vp.telescope-nvim}",

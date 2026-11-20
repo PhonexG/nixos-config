@@ -6,7 +6,7 @@
 input {
     keyboard {
         xkb {
-            // Встановлено англійську та українську розкладки, перемикання через Win+Space
+            // English and Ukrainian layouts enabled (toggle via Alt+Shift / Win+Space)
             layout "us,ua"
             options "grp:alt_shift_toggle,compose:ralt"
         }
@@ -32,7 +32,7 @@ input {
         // off
     }
 
-    // Фокус за курсором миші (аналог follow_mouse = 1 у Hyprland)
+    // Focus follows mouse cursor (equivalent to follow_mouse = 1 in Hyprland)
     focus-follows-mouse max-scroll-amount="0%"
 }
 
@@ -57,14 +57,13 @@ layout {
     }
 }
 
-// Автозапуск ваших сервісів
-// Ironbar is managed by its graphical-session systemd user service.
-spawn-at-startup "swaync"
+// Service autostart
+// Ironbar and SwayNC are managed by graphical-session systemd user services.
 // spawn-at-startup "xwayland-satellite"
 spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
 // spawn-at-startup "wl-paste" "--watch" "cliphist" "store"
 // spawn-at-startup "wl-paste" "--type" "image" "--watch" "cliphist" "store"
-// Автозапуск шпалер з вашого попереднього скрипта
+// Wallpaper autostart from previous script
 spawn-at-startup "bash" "-c" "~/.config/niri/scripts/apply-wallpaper.sh"
 
 hotkey-overlay {
@@ -78,7 +77,7 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 animations {
     // slowdown 3.0
 
-    // Вимикаємо анімацію розгортання з кута (усуває артефакт, коли спочатку з'являється один кут, а потім решта)
+    // Disable corner expand open animation (avoids artifact where one corner appears before the rest)
     window-open {
         off
     }
@@ -112,7 +111,7 @@ window-rule {
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
-    // --- Ваші основні програми та скрипти (Hyprland style) ---
+    // --- Core applications and scripts (Hyprland style) ---
     Mod+Return { spawn "kitty"; }
     Mod+Q { close-window; }
     Mod+Shift+E { quit; }

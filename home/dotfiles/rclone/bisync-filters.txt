@@ -1,6 +1,6 @@
 # Rclone bisync filters for Google Drive <-> ~/GDriveOffline
 
-# Системне та офісне сміття
+# System and office junk
 - **/.Trash/**
 - **/.DS_Store
 - **/Thumbs.db
@@ -13,29 +13,29 @@
 - **/.#*
 - **/.goutputstream-*
 
-# Тимчасові папки архіваторів (File Roller тощо) та завантажень
+# Temporary archive-manager folders (File Roller, etc.) and downloads
 - **/.fr-*/**
 - **/.fr-*
 - **/*.part
 - **/*.crdownload
 - **/*.filepart
 
-# Конфліктні та блокувальні файли rclone
+# Conflict and lock files from rclone
 - **/*.conflict*
 - **/*.lck
 
-# Системи контролю версій та IDE
+# Version control systems and IDEs
 - **/.git/**
 - **/.idea/**
 - **/.vscode/**
 
-# Nix & direnv / оточення
+# Nix & direnv / environment
 - **/.direnv/**
 - **/.devenv/**
 - **/result
 - **/result-*
 
-# .NET / C# / F# / VB (артефакти компіляції та бінарники)
+# .NET / C# / F# / VB (build artifacts and binaries)
 - **/bin/**
 - **/obj/**
 
@@ -50,7 +50,7 @@
 - **/.gradle/**
 - **/*.class
 
-# C / C++ (компіляція, бінарники, CMake)
+# C / C++ (build artifacts, binaries, CMake)
 - **/cmake-build-*/**
 - **/build/**
 - **/*.o
@@ -60,7 +60,7 @@
 - **/*.pdb
 - **/compile_commands.json
 
-# Python & оточення
+# Python & virtual environments
 - **/.venv/**
 - **/venv/**
 - **/env/**
@@ -69,17 +69,17 @@
 - **/.pytest_cache/**
 - **/.ruff_cache/**
 
-# Веб-залежності, збірки та Flutter/Dart
+# Web dependencies, builds, and Flutter/Dart
 - **/node_modules/**
 - **/dist/**
 - **/.next/**
 - **/.dart_tool/**
 
-# Локальні запуски, CI-логи та артефакти збірки
+# Local runs, CI logs, and build artifacts
 - **/.local-runs/**
 - **/.ci-logs/**
 
-# Кеші додатків, браузерів та розпаковані бекапи
+# Application/browser caches and extracted backups
 - **/system-backup_*/**
 - **/.cache/**
 - **/Cache/**
@@ -89,7 +89,7 @@
 - **/IndexedDB/**
 - **/Service Worker/**
 
-# Кореневі та будь-якої глибини збіги (шаблони без **/ також покривають корінь)
+# Root and any-depth matches (patterns without **/ also cover the root)
 - .local-runs/**
 - node_modules/**
 - .venv/**

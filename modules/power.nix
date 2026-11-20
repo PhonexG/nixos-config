@@ -4,7 +4,7 @@ let
   toggleEco = pkgs.callPackage ../scripts/toggle-eco.nix { };
 in
 {
-  # Завантаження драйвера HP BIOS WMI для перевірки параметрів у sysfs
+  # Load HP BIOS WMI driver to inspect parameters in sysfs
   boot.kernelModules = [ "hp-bioscfg" ];
 
   services.power-profiles-daemon.enable = false;

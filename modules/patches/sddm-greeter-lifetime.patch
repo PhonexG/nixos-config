@@ -1,0 +1,8 @@
+diff --git a/src/greeter/GreeterApp.cpp b/src/greeter/GreeterApp.cpp
+--- a/src/greeter/GreeterApp.cpp
++++ b/src/greeter/GreeterApp.cpp
+@@ -360,2 +360,4 @@ int main(int argc, char **argv)
+     QGuiApplication app(argc, argv);
++    // Do not terminate the greeter/compositor during the session VT switch.
++    app.setQuitOnLastWindowClosed(false);
+     SDDM::SignalHandler s;

@@ -2,7 +2,7 @@
 set -euo pipefail
 umask 077
 
-# Прокидаємо системні шляхи NixOS, щоб systemd бачив необхідні утиліти
+# Expose NixOS system paths so systemd can find the required utilities
 export PATH="/run/current-system/sw/bin:/etc/profiles/per-user/${USER:-$(id -un)}/bin:$HOME/.nix-profile/bin:$PATH"
 
 REMOTE="${RCLONE_REMOTE:-gdrive:}"
@@ -90,7 +90,7 @@ has_live_rclone_bisync() {
     stat_line=$(<"$pid_dir/stat" 2>/dev/null) || continue
     proc_state="${stat_line##*) }"
     proc_state="${proc_state%% *}"
-    # Ігноруємо зомбі/мертві процеси (Z, X), щоб вони не блокували очищення lock-файлів.
+    # Ignore zombie/dead processes (Z, X) so they do not block lock-file cleanup.
     [[ "$proc_state" == "Z" || "$proc_state" == "X" ]] && continue
     { mapfile -d '' -t cmd_args < "$pid_dir/cmdline"; } 2>/dev/null || continue
     [[ ${#cmd_args[@]} -gt 0 ]] || continue
@@ -150,7 +150,7 @@ fi
 rotate_log_if_needed
 cleanup_stale_bisync_state
 
-# Не створюємо порожні джерела або фільтри: їх відсутність потребує перевірки.
+# Do not create missing source directories or filters; their absence requires inspection.
 if [[ ! -d "$LOCAL" ]]; then
   log "Помилка: локальна папка '$LOCAL' відсутня. Синхронізацію скасовано."
   exit 2
@@ -160,13 +160,13 @@ if [[ ! -f "$FILTERS" || ! -r "$FILTERS" ]]; then
   exit 2
 fi
 
-# OAuth-конфігурація має залишатися приватною, зокрема після оновлення токена.
+# Keep the OAuth config private, including after token refresh.
 CONFIG_FILE="${RCLONE_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/rclone/rclone.conf}"
 if [[ -f "$CONFIG_FILE" ]]; then
   chmod 600 "$CONFIG_FILE"
 fi
 
-# Перевірка наявності віддаленого сховища.
+# Verify that the remote is configured.
 REMOTE_NAME="${REMOTE%%:*}:"
 if ! REMOTES=$(rclone listremotes 2>/dev/null); then
   log "Помилка: не вдалося прочитати конфігурацію rclone."
@@ -177,7 +177,7 @@ if ! grep -Fxq -- "$REMOTE_NAME" <<< "$REMOTES"; then
   exit 2
 fi
 
-# Немає мережі — пропускаємо запуск, не змінюючи стан bisync.
+# No network: skip this run without altering bisync state.
 if ! ping -c 1 -W 2 8.8.8.8 >/dev/null 2>&1 && ! curl -s --connect-timeout 2 --max-time 5 -I https://www.googleapis.com >/dev/null 2>&1; then
   log "--- $(date): немає мережі, синхронізацію пропущено ---"
   exit 0
@@ -185,14 +185,14 @@ fi
 
 log "--- Запуск синхронізації: $(date) ---"
 
-# Застарілі lock-файли вже очищено під flock після перевірки живих процесів.
-# --recover і --resilient відновлюють стан, не обходячи захисти bisync.
+# Stale lock files were already cleaned under flock after checking live processes.
+# --recover and --resilient recover state without bypassing bisync safeguards.
 TEMP_RUN_LOG=$(mktemp "$STATE_DIR/rclone-run.XXXXXX")
 trap 'rm -f "$TEMP_RUN_LOG"' EXIT
 
-# Оптимізована функція запуску bisync
-# Примітка: --remove-empty-dirs ПРИБРАНО, оскільки воно конфліктує з фільтрами
-# (наприклад **/bin/**, де rclone вважає директорію порожньою, але rmdir падає з "directory not empty")
+# Tuned bisync invocation
+# Note: --remove-empty-dirs was removed because it conflicts with filters
+# (e.g. **/bin/**, where rclone considers a directory empty, but rmdir fails with "directory not empty")
 run_sync() {
   rclone bisync "$REMOTE" "$LOCAL" \
     --workdir "$CACHE_DIR" \
@@ -220,7 +220,7 @@ run_sync() {
     --resilient "${SYNC_ARGS[@]}"
 }
 
-# Зберігаємо код rclone окремо від tee та перевіряємо лише журнал цього запуску.
+# Capture rclone's exit code separately from tee and inspect only this run's log.
 if run_sync 2>&1 | tee -a "$LOG_FILE" "$TEMP_RUN_LOG"; then
   RUN_STATUS=("${PIPESTATUS[@]}")
 else
@@ -244,8 +244,8 @@ if [[ $EXIT_CODE -ne 0 ]]; then
     log "ПОМИЛКА: rclone bisync завершився з помилкою (Код: $EXIT_CODE)."
     notify_error "rclone sync error" "Синхронізацію зупинено без автоматичного resync. Перевірте журнал: $LOG_FILE"
   fi
-  # --resync може перезаписувати новіші файли та відновлювати видалені.
-  # Якщо він потрібний, спочатку вручну перевірте --resync-mode newer --dry-run.
+  # --resync can overwrite newer files and restore deleted ones.
+  # If needed, first check manually with --resync-mode newer --dry-run.
   log "Автоматичний --resync вимкнено. Перед ручним відновленням перевірте журнал: $LOG_FILE"
   exit "$EXIT_CODE"
 fi

@@ -34,7 +34,7 @@
     "vm.dirty_bytes" = 48 * 1024 * 1024; # 48 MB
   };
 
-  # Стандартний Thunar без патчів вихідного коду.
+  # Standard Thunar without source patches.
   programs.thunar = {
     enable = true;
     plugins = with pkgs.xfce; [
@@ -46,10 +46,10 @@
   programs.xfconf.enable = true;
 
   environment.systemPackages = with pkgs; [
-    # Графічний архіватор
+    # GUI archive manager
     file-roller
 
-    # Формати архівів
+    # Archive formats
     _7zz
     p7zip
     unrar
@@ -66,7 +66,7 @@
     lzop
     cpio
 
-    # Носії та файлові системи
+    # Storage devices and filesystems
     xfce.exo
     udisks2
     gvfs

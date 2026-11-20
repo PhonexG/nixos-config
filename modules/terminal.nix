@@ -138,7 +138,7 @@ in
     keybindings = true;
   };
 
-  # Командний рядок та інтерактивні утиліти.
+  # CLI and interactive utilities.
   environment.systemPackages = with pkgs; [
     rebuildScript
     starship

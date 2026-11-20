@@ -56,8 +56,14 @@ in
   systemd.user.services.ironbar = {
     Unit = {
       Description = "Ironbar desktop panel";
-      After = [ "graphical-session-pre.target" ];
+      # Niri is Type=notify and ordered Before=graphical-session.target.
+      # Starting after the target waits for its Wayland socket/environment.
+      After = [
+        "graphical-session-pre.target"
+        "graphical-session.target"
+      ];
       PartOf = [ "graphical-session.target" ];
+      ConditionEnvironment = "WAYLAND_DISPLAY";
     };
     Service = {
       ExecStart = "${ironbar}/bin/ironbar";
@@ -73,6 +79,25 @@ in
       RestartSec = 2;
       KillMode = "control-group";
       TimeoutStopSec = 5;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  # One systemd-managed notification daemon; leave theme files in theming.nix.
+  systemd.user.services.swaync = {
+    Unit = {
+      Description = "Swaync notification daemon";
+      Documentation = "https://github.com/ErikReider/SwayNotificationCenter";
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+      ConditionEnvironment = "WAYLAND_DISPLAY";
+    };
+    Service = {
+      Type = "dbus";
+      BusName = "org.freedesktop.Notifications";
+      ExecStart = "${pkgs.swaynotificationcenter}/bin/swaync";
+      Restart = "on-failure";
+      RestartSec = 2;
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
@@ -115,7 +140,7 @@ in
     "niri/config.kdl".source = ./dotfiles/niri/config.kdl;
     "niri/wallpapers/default.png".source = ./dotfiles/niri/default.png;
 
-    # Ironbar; config.toml та style.css керуються через theming.nix.
+    # Ironbar; config.toml and style.css are managed via theming.nix.
     "ironbar/panel-status.py".source = ./dotfiles/ironbar/panel-status.py;
     "ironbar/speaker-status.sh" = {
       source = ./dotfiles/ironbar/speaker-status.sh;
@@ -143,24 +168,24 @@ in
     "swayosd/config.toml".source = ./dotfiles/swayosd/config.toml;
     "swayosd/style.css".source = ./dotfiles/swayosd/style.css;
 
-    # SwayNC; config.json та style.css керуються через theming.nix.
+    # SwayNC; config.json and style.css are managed via theming.nix.
 
-    # Fuzzel і Kitty
+    # Fuzzel and Kitty
     "fuzzel/fuzzel.ini".source = ./dotfiles/fuzzel/fuzzel.ini;
     "kitty/kitty.conf".source = ./dotfiles/kitty/kitty.conf;
     "kitty/launch-actions.conf".source = ./dotfiles/kitty/launch-actions.conf;
     "kitty/open-actions.conf".source = ./dotfiles/kitty/open-actions.conf;
 
-    # Wlogout, Hyprlock і Swappy
+    # Wlogout, Hyprlock, and Swappy
     "wlogout/layout".source = ./dotfiles/wlogout/layout;
     "wlogout/style.css".source = ./dotfiles/wlogout/style.css;
     "hypr/hyprlock.conf".source = ./dotfiles/hypr/hyprlock.conf;
     "swappy/config".source = ./dotfiles/swappy/config;
 
-    # Редактор і командний рядок
+    # Editor and CLI
     "micro/bindings.json".source = ./dotfiles/micro/bindings.json;
 
-    # GTK, Thunar та XFCE
+    # GTK, Thunar, and XFCE
     "gtk-3.0/settings.ini".source = ./dotfiles/gtk-3.0/settings.ini;
     "gtk-3.0/bookmarks".source = ./dotfiles/gtk-3.0/bookmarks;
     "gtk-4.0/settings.ini".source = ./dotfiles/gtk-4.0/settings.ini;
