@@ -107,11 +107,12 @@ in
       fuzzel
       swaynotificationcenter
       kitty
+      foot
+      terminaltexteffects
       wl-clipboard
       cliphist
       xdg-user-dirs
       xdg-utils
-      wlogout
       swww
       grim
       slurp
@@ -136,7 +137,6 @@ in
     ++ [ catppuccinSddm ];
 
   security.pam.services = {
-    swaylock = { };
     hyprlock = { };
     sddm.enableGnomeKeyring = true;
   };

@@ -63,11 +63,40 @@ pkgs.writeShellScriptBin "toggle-eco" ''
     done
   }
 
-  set_platform() {
-    node="/sys/firmware/acpi/platform_profile"
-    if [ -f "$node" ]; then
-      echo "$1" > "$node" 2>/dev/null || true
+  find_niri_socket() {
+    local runtime_dir="/run/user/$TARGET_UID"
+    local sock=""
+
+    if [ -n "''${NIRI_SOCKET:-}" ] && [ -S "''${NIRI_SOCKET}" ]; then
+      printf '%s\n' "$NIRI_SOCKET"
+      return 0
     fi
+
+    for sock in "$runtime_dir"/niri.*.sock; do
+      [ -S "$sock" ] || continue
+      if sudo -u "$TARGET_USER" \
+        XDG_RUNTIME_DIR="$runtime_dir" \
+        NIRI_SOCKET="$sock" \
+        ${pkgs.niri}/bin/niri msg version >/dev/null 2>&1; then
+        printf '%s\n' "$sock"
+        return 0
+      fi
+    done
+
+    return 1
+  }
+
+  set_display_mode() {
+    local mode="$1"
+    local sock=""
+    sock="$(find_niri_socket || true)"
+    [ -n "$sock" ] || return 0
+
+    sudo -u "$TARGET_USER" \
+      XDG_RUNTIME_DIR="/run/user/$TARGET_UID" \
+      NIRI_SOCKET="$sock" \
+      ${pkgs.niri}/bin/niri msg output eDP-1 mode "$mode" \
+      2>/dev/null || true
   }
 
   set_boost() {
@@ -80,10 +109,7 @@ pkgs.writeShellScriptBin "toggle-eco" ''
   if [ -f "$STATE" ]; then
     rm -f "$STATE"
 
-    sudo -u "$TARGET_USER" \
-      XDG_RUNTIME_DIR="/run/user/$TARGET_UID" \
-      ${pkgs.niri}/bin/niri msg output eDP-1 mode 1920x1200@60.001 \
-      2>/dev/null || true
+    set_display_mode "1920x1200@60.001"
 
     ${pkgs.brightnessctl}/bin/brightnessctl set 35% 2>/dev/null || true
     ${pkgs.util-linux}/bin/rfkill unblock bluetooth 2>/dev/null || true
@@ -92,7 +118,6 @@ pkgs.writeShellScriptBin "toggle-eco" ''
     set_governor "powersave"
     set_boost 1
     set_gpu "auto"
-    set_platform "balanced"
 
     sleep 1
     WATTS="$(get_power)"
@@ -107,10 +132,7 @@ pkgs.writeShellScriptBin "toggle-eco" ''
 
   touch "$STATE"
 
-  sudo -u "$TARGET_USER" \
-    XDG_RUNTIME_DIR="/run/user/$TARGET_UID" \
-    ${pkgs.niri}/bin/niri msg output eDP-1 mode 1920x1200@40.003 \
-    2>/dev/null || true
+  set_display_mode "1920x1200@40.003"
 
   ${pkgs.brightnessctl}/bin/brightnessctl set 20% 2>/dev/null || true
   ${pkgs.util-linux}/bin/rfkill block bluetooth 2>/dev/null || true
@@ -119,7 +141,6 @@ pkgs.writeShellScriptBin "toggle-eco" ''
   set_governor "powersave"
   set_boost 1
   set_gpu "low"
-  set_platform "low-power"
 
   sleep 1
   WATTS="$(get_power)"

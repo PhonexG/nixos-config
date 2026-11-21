@@ -110,9 +110,9 @@ update_key_in_file "$DOTFILES_KITTY" "background_blur" "$blur"
 # Live reload running Kitty instances
 if pids="$(pidof kitty 2>/dev/null)" && [[ -n "$pids" ]]; then
   # shellcheck disable=SC2086
-  kill -SIGUSR1 $pids 2>/dev/null || pkill -USR1 -x kitty 2>/dev/null || true
+  kill -SIGUSR1 $pids 2>/dev/null || pkill -USR1 -x .kitty-wrapped 2>/dev/null || pkill -USR1 -x kitty 2>/dev/null || true
 else
-  pkill -USR1 -x kitty 2>/dev/null || true
+  pkill -USR1 -x .kitty-wrapped 2>/dev/null || pkill -USR1 -x kitty 2>/dev/null || true
 fi
 
 shopt -s nullglob
@@ -122,9 +122,5 @@ for sock in /tmp/kitty /tmp/kitty-*; do
   kitty @ --to "unix:$sock" load-config >/dev/null 2>&1 || true
 done
 shopt -u nullglob
-
-# Show OSD and desktop notification
-swayosd-client --custom-message "Blur: ${blur}px (opacity ${opacity})" --custom-icon "preferences-desktop-effects" >/dev/null 2>&1 || true
-notify-send -h string:x-canonical-private-synchronous:blur-adjust -u low -t 1400 "Frosted Blur" "Blur: ${blur}px · Opacity: ${opacity}" >/dev/null 2>&1 || true
 
 printf 'Step %d: blur=%spx opacity=%s\n' "$next_step" "$blur" "$opacity"

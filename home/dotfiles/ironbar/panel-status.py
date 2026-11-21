@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Small live information cards. Each update is one Pango-safe stdout line."""
 import html
+import os
 from pathlib import Path
 import signal
 import sys
@@ -86,6 +87,19 @@ def battery_text(root=Path('/sys/class/power_supply')):
         lines.append(f'Health: {min(100, full / design * 100):.0f}% of design capacity')
     if Path('/tmp/super_eco_active').exists():
         lines += ['', 'Ultra-Eco mode enabled']
+    runtime_dir = Path(os.environ.get('XDG_RUNTIME_DIR') or f'/run/user/{os.getuid()}')
+    power_state = runtime_dir / 'power-state'
+    if (power_state / 'keep-screen-on').exists():
+        lines += ['', 'Keep screen on active']
+    if (
+        (power_state / 'caffeine-mode').exists()
+        or (power_state / 'llm-mode').exists()
+        or any(power_state.glob('caffeine-run.*'))
+        or any(power_state.glob('llm-run.*'))
+    ):
+        lines += ['', 'Caffeine mode active']
+    if (power_state / 'no-autolock').exists():
+        lines += ['', 'Auto-lock on sleep disabled']
     return '\n'.join(lines)
 
 

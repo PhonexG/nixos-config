@@ -19,6 +19,7 @@ in
 {
   imports = [
     ./neovim.nix
+    ./power.nix
     ./theming.nix
   ];
 
@@ -146,14 +147,6 @@ in
       source = ./dotfiles/ironbar/speaker-status.sh;
       executable = true;
     };
-    "ironbar/mic-status.sh" = {
-      source = ./dotfiles/ironbar/mic-status.sh;
-      executable = true;
-    };
-    "ironbar/brightness.sh" = {
-      source = ./dotfiles/ironbar/brightness.sh;
-      executable = true;
-    };
     "ironbar/battery-status.sh" = {
       source = ./dotfiles/ironbar/battery-status.sh;
       executable = true;
@@ -176,9 +169,7 @@ in
     "kitty/launch-actions.conf".source = ./dotfiles/kitty/launch-actions.conf;
     "kitty/open-actions.conf".source = ./dotfiles/kitty/open-actions.conf;
 
-    # Wlogout, Hyprlock, and Swappy
-    "wlogout/layout".source = ./dotfiles/wlogout/layout;
-    "wlogout/style.css".source = ./dotfiles/wlogout/style.css;
+    # Hyprlock and Swappy
     "hypr/hyprlock.conf".source = ./dotfiles/hypr/hyprlock.conf;
     "swappy/config".source = ./dotfiles/swappy/config;
 

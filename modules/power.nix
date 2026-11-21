@@ -13,10 +13,7 @@ in
     enable = true;
 
     settings = {
-      PLATFORM_PROFILE_ON_AC = "performance";
-      PLATFORM_PROFILE_ON_BAT = "balanced";
-
-      CPU_SCALING_GOVERNOR_ON_AC = "schedutil";
+      CPU_SCALING_GOVERNOR_ON_AC = "powersave";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
       CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
@@ -27,6 +24,7 @@ in
 
       WIFI_PWR_ON_AC = "off";
       WIFI_PWR_ON_BAT = "off";
+      WOL_DISABLE = "Y";
 
       SOUND_POWER_SAVE_ON_AC = 0;
       SOUND_POWER_SAVE_ON_BAT = 1;
@@ -45,9 +43,6 @@ in
       AHCI_RUNTIME_PM_ON_AC = "on";
       AHCI_RUNTIME_PM_ON_BAT = "auto";
 
-      RADEON_DPM_PERF_LEVEL_ON_AC = "auto";
-      RADEON_DPM_PERF_LEVEL_ON_BAT = "auto";
-
       AMDGPU_ABM_LEVEL_ON_AC = 0;
       AMDGPU_ABM_LEVEL_ON_BAT = 1;
 
@@ -56,13 +51,24 @@ in
     };
   };
 
+  # Prevent spurious AC s2idle wake-sleep loops from Ethernet/WWAN while
+  # preserving lid switch, power button, and keyboard wakeup.
+  networking.networkmanager.settings.connection."ethernet.wake-on-lan" = 0;
+
+  services.udev.extraRules = ''
+    # Realtek RTL8111/8168 Ethernet (r8169)
+    ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10ec", ATTR{device}=="0x8168", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
+    # MediaTek T700 5G WWAN modem (mtk_t7xx)
+    ACTION=="add|bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x14c3", ATTR{device}=="0x4d75", TEST=="power/wakeup", ATTR{power/wakeup}="disabled"
+  '';
+
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";
     HandleLidSwitchExternalPower = "suspend";
     HandleLidSwitchDocked = "suspend";
     HandlePowerKey = "suspend";
     HandleSuspendKey = "suspend";
-    LidSwitchIgnoreInhibited = "yes";
+    LidSwitchIgnoreInhibited = "no";
   };
 
   services.upower.enable = true;

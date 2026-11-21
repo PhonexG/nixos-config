@@ -10,6 +10,9 @@ icon_theme = "Papirus-Dark"
 [ironvar_defaults]
 tray_open = "false"
 tray_arrow = "󰅀"
+caffeine_mode = "false"
+autolock_off = "false"
+screen_awake = "false"
 notifications_status = "Notifications: loading status…"
 wifi_toggle_label = "On"
 wifi_status_msg = "Scanning networks…"
@@ -371,6 +374,51 @@ type = "label"
 class = "stats"
 justify = "left"
 label = "{{watch:python3 /home/oni/.config/ironbar/panel-status.py cpu}}"
+
+[[end]]
+type = "custom"
+name = "screen-awake"
+class = "bar-icon item-power-badge item-screen-awake"
+tooltip = "Keep Screen On ACTIVE · Click to disable"
+
+[[end.bar]]
+type = "button"
+name = "screen-awake-btn"
+label = "󰛐"
+orientation = "horizontal"
+show_if = "#screen_awake"
+transition_type = "none"
+on_click = "!screen-awake off"
+
+[[end]]
+type = "custom"
+name = "caffeine-mode"
+class = "bar-icon item-power-badge item-caffeine-mode"
+tooltip = "Caffeine Mode ON · Click to disable"
+
+[[end.bar]]
+type = "button"
+name = "caffeine-mode-btn"
+label = "󰅶"
+orientation = "horizontal"
+show_if = "#caffeine_mode"
+transition_type = "none"
+on_click = "!caffeine off"
+
+[[end]]
+type = "custom"
+name = "autolock-off"
+class = "bar-icon item-power-badge item-autolock-off"
+tooltip = "Auto-Lock on Sleep OFF · Click to re-enable"
+
+[[end.bar]]
+type = "button"
+name = "autolock-off-btn"
+label = "󰌿"
+orientation = "horizontal"
+show_if = "#autolock_off"
+transition_type = "none"
+on_click = "!lock-toggle on"
 
 [[end]]
 type = "custom"

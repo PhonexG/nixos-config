@@ -76,6 +76,24 @@ window,
     color: @accent_primary;
 }
 
+#bar .item-power-badge {
+    margin: 0;
+    padding: 0;
+    min-height: 0;
+}
+
+#bar .item-screen-awake label {
+    color: @accent_secondary;
+}
+
+#bar .item-caffeine-mode label {
+    color: @status_ok;
+}
+
+#bar .item-autolock-off label {
+    color: @status_warn;
+}
+
 #bar button:hover label {
     color: @accent_primary;
 }

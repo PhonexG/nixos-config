@@ -34,6 +34,14 @@ input {
 
     // Focus follows mouse cursor (equivalent to follow_mouse = 1 in Hyprland)
     focus-follows-mouse max-scroll-amount="0%"
+
+    // Let systemd-logind handle the physical power key (HandlePowerKey=suspend)
+    disable-power-key-handling
+}
+
+switch-events {
+    lid-close { spawn "session-power" "lid-close"; }
+    lid-open { spawn "session-power" "lid-open"; }
 }
 
 cursor {
@@ -119,24 +127,24 @@ binds {
     Mod+D { spawn "~/.config/niri/scripts/menu-control.sh" "launcher"; }
     Mod+F { fullscreen-window; }
     Mod+Space { toggle-window-floating; }
-    
+
     Mod+Ctrl+Alt+B { spawn-sh "~/.config/ironbar/controls.sh bar-toggle"; }
-    Ctrl+Alt+P { spawn "~/.config/niri/scripts/menu-control.sh" "power"; }
     Mod+X { spawn "~/.config/niri/scripts/menu-control.sh" "power"; }
     Mod+Alt+L { spawn "~/.config/niri/scripts/lock.sh"; }
+    Mod+Alt+K { spawn "lock-toggle" "toggle"; }
+    Mod+Alt+C { spawn "caffeine" "toggle"; }
+    Mod+Alt+D { spawn "screen-awake" "toggle"; }
+    Mod+Alt+S { spawn "screensaver" "toggle"; }
     Mod+W { spawn "~/.config/niri/scripts/menu-control.sh" "wallpaper"; }
     Mod+Shift+T { spawn "/etc/nixos/scripts/theme-switcher.sh"; }
     Mod+B { spawn "zen-beta"; }
     Mod+N { spawn "swaync-client" "-t"; }
     Mod+C { spawn "~/.config/niri/scripts/menu-control.sh" "clipboard"; }
-    
-	Mod+Ctrl+M { spawn "sudo" "toggle-eco"; }
 
-    XF86AudioMicMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+    Mod+Ctrl+M { spawn "sudo" "toggle-eco"; }
     Mod+Shift+R { spawn "~/.config/niri/scripts/reload-session.sh"; }
 
-    Super+Alt+S allow-when-locked=true hotkey-overlay-title=null { spawn-sh "pkill orca || exec orca"; }
-
+    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"; }
     XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
@@ -147,7 +155,7 @@ binds {
     XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
     XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
 
-    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "s" "5%+"; }
+    XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "s" "5%+"; }
     XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "s" "5%-"; }
 
     Mod+O repeat=false { toggle-overview; }
@@ -156,19 +164,11 @@ binds {
     Mod+Down  { focus-window-down; }
     Mod+Up    { focus-window-up; }
     Mod+Right { focus-column-right; }
-    Mod+H     { focus-column-left; }
-    Mod+J     { focus-window-down; }
-    Mod+K     { focus-window-up; }
-    Mod+L     { focus-column-right; }
 
     Mod+Ctrl+Left  { move-column-left; }
     Mod+Ctrl+Down  { move-window-down; }
     Mod+Ctrl+Up    { move-window-up; }
     Mod+Ctrl+Right { move-column-right; }
-    Mod+Ctrl+H     { move-column-left; }
-    Mod+Ctrl+J     { move-window-down; }
-    Mod+Ctrl+K     { move-window-up; }
-    Mod+Ctrl+L     { move-column-right; }
 
     Mod+Home { focus-column-first; }
     Mod+End  { focus-column-last; }
@@ -179,33 +179,16 @@ binds {
     Mod+Shift+Down  { focus-monitor-down; }
     Mod+Shift+Up    { focus-monitor-up; }
     Mod+Shift+Right { focus-monitor-right; }
-    Mod+Shift+H     { focus-monitor-left; }
-    Mod+Shift+J     { focus-monitor-down; }
-    Mod+Shift+K     { focus-monitor-up; }
-    Mod+Shift+L     { focus-monitor-right; }
 
     Mod+Shift+Ctrl+Left  { move-column-to-monitor-left; }
     Mod+Shift+Ctrl+Down  { move-column-to-monitor-down; }
     Mod+Shift+Ctrl+Up    { move-column-to-monitor-up; }
     Mod+Shift+Ctrl+Right { move-column-to-monitor-right; }
-    Mod+Shift+Ctrl+H     { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
 
     Mod+Page_Down      { focus-workspace-down; }
     Mod+Page_Up        { focus-workspace-up; }
-    Mod+U              { focus-workspace-down; }
-    Mod+I              { focus-workspace-up; }
     Mod+Ctrl+Page_Down { move-column-to-workspace-down; }
     Mod+Ctrl+Page_Up   { move-column-to-workspace-up; }
-    Mod+Ctrl+U         { move-column-to-workspace-down; }
-    Mod+Ctrl+I         { move-column-to-workspace-up; }
-
-    Mod+Shift+Page_Down { move-workspace-down; }
-    Mod+Shift+Page_Up   { move-workspace-up; }
-    Mod+Shift+U         { move-workspace-down; }
-    Mod+Shift+I         { move-workspace-up; }
 
     Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
     Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
@@ -217,11 +200,6 @@ binds {
     Mod+Ctrl+WheelScrollRight { move-column-right; }
     Mod+Ctrl+WheelScrollLeft  { move-column-left; }
 
-    Mod+Shift+WheelScrollDown      { focus-column-right; }
-    Mod+Shift+WheelScrollUp        { focus-column-left; }
-    Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
-    Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
-
     Mod+1 { focus-workspace 1; }
     Mod+2 { focus-workspace 2; }
     Mod+3 { focus-workspace 3; }
@@ -231,7 +209,7 @@ binds {
     Mod+7 { focus-workspace 7; }
     Mod+8 { focus-workspace 8; }
     Mod+9 { focus-workspace 9; }
-    
+
     Mod+Shift+1 { move-column-to-workspace 1; }
     Mod+Shift+2 { move-column-to-workspace 2; }
     Mod+Shift+3 { move-column-to-workspace 3; }
@@ -244,13 +222,8 @@ binds {
 
     Mod+BracketLeft  { consume-or-expel-window-left; }
     Mod+BracketRight { consume-or-expel-window-right; }
-    Mod+Comma  { consume-window-into-column; }
-    Mod+Period { expel-window-from-column; }
 
     Mod+R { switch-preset-column-width; }
-    Mod+Shift+A { switch-preset-column-width-back; }
-    Mod+Ctrl+Shift+R { switch-preset-window-height; }
-    Mod+Ctrl+R { reset-window-height; }
 
     Mod+M { maximize-window-to-edges; }
     Mod+Ctrl+F { expand-column-to-available-width; }
@@ -265,16 +238,23 @@ binds {
     Mod+Alt+Minus { spawn "/etc/nixos/scripts/blur-adjust.sh" "down"; }
     Mod+Alt+0     { spawn "/etc/nixos/scripts/blur-adjust.sh" "toggle"; }
 
-    Mod+V       { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
     Print { spawn-sh "grim -g \"$(slurp)\" - | wl-copy && notify-send \"Screenshot\" \"Area copied to clipboard\""; }
     Shift+Print { spawn-sh "grim -g \"$(slurp)\" - | swappy -f -"; }
     Mod+Print { spawn-sh "grim - | wl-copy && grim ~/Pictures/Screen_$(date +'%Y-%m-%d_%H-%M-%S').png && notify-send \"Screenshot\" \"Saved to ~/Pictures\""; }
 
-    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
-
     Mod+Shift+P { power-off-monitors; }
 }
 
 include "/home/oni/.config/themes/current/niri.kdl"
+
+window-rule {
+    match app-id=r#"^nixos-screensaver$"#
+    open-fullscreen true
+    open-focused true
+    geometry-corner-radius 0
+    border { off; }
+    focus-ring { off; }
+    shadow { off; }
+}

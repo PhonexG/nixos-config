@@ -62,6 +62,16 @@ in
       ngen = "sudo nixos-rebuild list-generations";
       nixpins = "echo 'Список закріплених поколінь:'; ls -la /nix/var/nix/gcroots/pinned_system_*";
 
+      # Power & Idle
+      nolock = "lock-toggle off";
+      autolock = "lock-toggle on";
+      lockstat = "lock-toggle --status";
+      nosleep = "caffeine toggle";
+      stayawake = "caffeine toggle";
+      caffeine-run = "caffeine run";
+      nodim = "screen-awake toggle";
+      screenstat = "screen-awake --status";
+
       ports = "ss -tulpn";
       myip = "ip -brief addr";
       zen = "zen-beta";

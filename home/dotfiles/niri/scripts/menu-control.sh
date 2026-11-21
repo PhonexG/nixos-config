@@ -59,9 +59,9 @@ run_power() {
   }
 
   case "$choice" in
-    '  Lock') "$HOME/.config/niri/scripts/lock.sh" ;;
+    '  Lock') session-power lock ;;
     '󰍃  Logout') confirm 'Logout' && niri msg action quit ;;
-    '󰤄  Suspend') confirm 'Suspend' && "$HOME/.config/niri/scripts/suspend.sh" ;;
+    '󰤄  Suspend') confirm 'Suspend' && systemctl suspend ;;
     '󰜉  Reboot') confirm 'Reboot' && systemctl reboot ;;
     '  Shutdown') confirm 'Shutdown' && systemctl poweroff ;;
   esac
