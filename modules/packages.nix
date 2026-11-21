@@ -5,23 +5,23 @@ let
   zenBrowser = inputs.zen-browser.packages.${system}.default;
 in
 {
-  # Загальні пакети, які не належать до конкретного сервісу або модуля.
+  # General packages not tied to a specific service or module.
   environment.systemPackages = with pkgs; [
-    # Базові мережеві інструменти
+    # Basic networking tools
     curl
     wget
 
-    # Графічні програми
+    # GUI applications
     zenBrowser
     telegram-desktop
     obsidian
     steam
     jetbrains.idea 
-    # Мультимедіа
+    # Multimedia
     mpv
     ffmpeg
 
-    # Облікові дані та словники
+    # Keyring and dictionaries
     seahorse
     libsecret
     hunspell

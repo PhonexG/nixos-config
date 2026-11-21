@@ -115,10 +115,15 @@ run_clipboard() {
   notify-send "Clipboard" "Copied to clipboard" || true
 }
 
+run_theme() {
+  /etc/nixos/scripts/theme-switcher.sh
+}
+
 case "$mode" in
   launcher|apps|drun) run_launcher ;;
   power) run_power ;;
   wallpaper|wall) run_wallpaper ;;
+  theme|themes) run_theme ;;
   clipboard|clip) run_clipboard ;;
   *) notify-send 'Menu' "Unknown mode: $mode" || true; exit 1 ;;
 esac

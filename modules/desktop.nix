@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 let
+  sddm = import ./sddm-package.nix { inherit pkgs; };
   catppuccinSddm = pkgs.catppuccin-sddm.override {
     flavor = "mocha";
     accent = "mauve";
@@ -9,11 +10,12 @@ in
 {
   programs.niri.enable = true;
 
-  # Менеджер входу для Wayland-сесії Niri.
+  # Display manager for the Niri Wayland session.
   services.displayManager = {
     defaultSession = "niri";
     sddm = {
       enable = true;
+      package = sddm;
       wayland.enable = true;
       theme = "catppuccin-mocha-mauve";
       settings = {
@@ -35,7 +37,7 @@ in
   programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
-  # XDG portals для Niri та GTK-застосунків.
+  # XDG portals for Niri and GTK applications.
   xdg.portal = {
     enable = true;
     extraPortals = [
@@ -98,7 +100,7 @@ in
     };
   };
 
-  # Компоненти та утиліти графічної сесії.
+  # Graphical session components and utilities.
   environment.systemPackages =
     (with pkgs; [
       xwayland-satellite

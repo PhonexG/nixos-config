@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  # Контейнери
+  # Containers
   virtualisation = {
     containers.enable = true;
     docker = {
@@ -17,7 +17,7 @@
 
   users.users.oni.extraGroups = [ "docker" ];
 
-  # Запуск сторонніх динамічних бінарників.
+  # Run third-party dynamic binaries.
   services.envfs.enable = false;
   programs.nix-ld = {
     enable = true;
@@ -25,10 +25,10 @@
       # GIO / GLib
       glib
 
-      # Звук
+      # Audio
       alsa-lib
 
-      # Графіка, Wayland та Vulkan
+      # Graphics, Wayland, and Vulkan
       vulkan-loader
       libxkbcommon
       wayland
@@ -43,7 +43,7 @@
       xorg.libXrandr
       xorg.libxcb
 
-      # Базові системні бібліотеки
+      # Base system libraries
       fontconfig
       freetype
       stdenv.cc.cc
@@ -52,13 +52,13 @@
     ];
   };
 
-  # Глобальний набір інструментів розробника.
+  # Global developer toolset.
   environment.systemPackages = with pkgs; [
-    # Мови та компілятори
+    # Languages and compilers
     python3
     gcc
 
-    # Системи збирання та налагодження
+    # Build systems and debugging
     gnumake
     cmake
     ninja
@@ -66,11 +66,11 @@
     gdb
     clang-tools
 
-    # Python tooling та LSP
+    # Python tooling and LSP
     pyright
     ruff
 
-    # Керування контейнерами
+    # Container management
     docker-compose
     lazydocker
   ];

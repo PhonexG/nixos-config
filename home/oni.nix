@@ -19,6 +19,7 @@ in
 {
   imports = [
     ./neovim.nix
+    ./theming.nix
   ];
 
   home = {
@@ -38,6 +39,10 @@ in
         source = ../scripts/backup-system.sh;
         executable = true;
       };
+      ".local/bin/blur-adjust.sh" = {
+        source = ../scripts/blur-adjust.sh;
+        executable = true;
+      };
     };
   };
 
@@ -51,8 +56,14 @@ in
   systemd.user.services.ironbar = {
     Unit = {
       Description = "Ironbar desktop panel";
-      After = [ "graphical-session-pre.target" ];
+      # Niri is Type=notify and ordered Before=graphical-session.target.
+      # Starting after the target waits for its Wayland socket/environment.
+      After = [
+        "graphical-session-pre.target"
+        "graphical-session.target"
+      ];
       PartOf = [ "graphical-session.target" ];
+      ConditionEnvironment = "WAYLAND_DISPLAY";
     };
     Service = {
       ExecStart = "${ironbar}/bin/ironbar";
@@ -60,6 +71,7 @@ in
         "IRONBAR_LOG=error"
         "IRONBAR_FILE_LOG=error"
         # English panel/calendar text without changing the session or Fuzzel locale.
+        "LC_NUMERIC=en_US.UTF-8"
         "LC_TIME=en_US.UTF-8"
         "LC_MESSAGES=en_US.UTF-8"
       ];
@@ -67,6 +79,25 @@ in
       RestartSec = 2;
       KillMode = "control-group";
       TimeoutStopSec = 5;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  # One systemd-managed notification daemon; leave theme files in theming.nix.
+  systemd.user.services.swaync = {
+    Unit = {
+      Description = "Swaync notification daemon";
+      Documentation = "https://github.com/ErikReider/SwayNotificationCenter";
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+      ConditionEnvironment = "WAYLAND_DISPLAY";
+    };
+    Service = {
+      Type = "dbus";
+      BusName = "org.freedesktop.Notifications";
+      ExecStart = "${pkgs.swaynotificationcenter}/bin/swaync";
+      Restart = "on-failure";
+      RestartSec = 2;
     };
     Install.WantedBy = [ "graphical-session.target" ];
   };
@@ -109,9 +140,7 @@ in
     "niri/config.kdl".source = ./dotfiles/niri/config.kdl;
     "niri/wallpapers/default.png".source = ./dotfiles/niri/default.png;
 
-    # Ironbar; colors.css генерується динамічно.
-    "ironbar/config.json".source = ./dotfiles/ironbar/config.json;
-    "ironbar/style.css".source = ./dotfiles/ironbar/style.css;
+    # Ironbar; config.toml and style.css are managed via theming.nix.
     "ironbar/panel-status.py".source = ./dotfiles/ironbar/panel-status.py;
     "ironbar/speaker-status.sh" = {
       source = ./dotfiles/ironbar/speaker-status.sh;
@@ -139,26 +168,24 @@ in
     "swayosd/config.toml".source = ./dotfiles/swayosd/config.toml;
     "swayosd/style.css".source = ./dotfiles/swayosd/style.css;
 
-    # SwayNC, Fuzzel і Kitty
-    "swaync/config.json".source = ./dotfiles/swaync/config.json;
-    "swaync/style.css".source = ./dotfiles/swaync/style.css;
+    # SwayNC; config.json and style.css are managed via theming.nix.
+
+    # Fuzzel and Kitty
     "fuzzel/fuzzel.ini".source = ./dotfiles/fuzzel/fuzzel.ini;
     "kitty/kitty.conf".source = ./dotfiles/kitty/kitty.conf;
     "kitty/launch-actions.conf".source = ./dotfiles/kitty/launch-actions.conf;
     "kitty/open-actions.conf".source = ./dotfiles/kitty/open-actions.conf;
 
-    # Wlogout, Hyprlock і Swappy
+    # Wlogout, Hyprlock, and Swappy
     "wlogout/layout".source = ./dotfiles/wlogout/layout;
     "wlogout/style.css".source = ./dotfiles/wlogout/style.css;
     "hypr/hyprlock.conf".source = ./dotfiles/hypr/hyprlock.conf;
-    "hypr/colors.conf".source = ./dotfiles/hypr/colors.conf;
     "swappy/config".source = ./dotfiles/swappy/config;
 
-    # Редактор і командний рядок
+    # Editor and CLI
     "micro/bindings.json".source = ./dotfiles/micro/bindings.json;
-    "starship.toml".source = ./dotfiles/starship.toml;
 
-    # GTK, Thunar та XFCE
+    # GTK, Thunar, and XFCE
     "gtk-3.0/settings.ini".source = ./dotfiles/gtk-3.0/settings.ini;
     "gtk-3.0/bookmarks".source = ./dotfiles/gtk-3.0/bookmarks;
     "gtk-4.0/settings.ini".source = ./dotfiles/gtk-4.0/settings.ini;
@@ -171,14 +198,11 @@ in
       source = ./dotfiles/rclone/rclone-autofix.sh;
       executable = true;
     };
+
+    # Mask duplicate XDG autostart tray applets (handled by Ironbar popup controls)
+    "autostart/nm-applet.desktop".text = "[Desktop Entry]\nHidden=true\n";
+    "autostart/blueman.desktop".text = "[Desktop Entry]\nHidden=true\n";
   };
 
   xdg.dataFile."applications/micro.desktop".source = ./dotfiles/applications/micro.desktop;
-
-  dconf.settings."org/gnome/desktop/interface" = {
-    color-scheme = "prefer-dark";
-    gtk-theme = "Adwaita-dark";
-    icon-theme = "Papirus-Dark";
-    cursor-theme = "Bibata-Modern-Ice";
-  };
 }

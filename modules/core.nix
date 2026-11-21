@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  # Завантажувач
+  # Bootloader
   boot.loader = {
     systemd-boot = {
       enable = true;
@@ -10,7 +10,7 @@
     efi.canTouchEfiVariables = true;
   };
 
-  # Nix та обслуговування сховища
+  # Nix and store maintenance
   nix = {
     settings = {
       experimental-features = [
@@ -29,23 +29,33 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # Обмеження розміру постійних системних журналів.
+  # Limit persistent system journal size.
   services.journald.extraConfig = ''
     SystemMaxUse=200M
   '';
 
-  # Мережа
+  # Keep useful small crash dumps, but not multi-GiB emulator memory images.
+  systemd.coredump.extraConfig = ''
+    Storage=external
+    Compress=yes
+    ProcessSizeMax=512M
+    ExternalSizeMax=512M
+    MaxUse=1G
+    KeepFree=5G
+  '';
+
+  # Networking
   networking = {
     hostName = "nixos";
     networkmanager.enable = true;
   };
 
-  # Пріоритет IPv4 над неробочим IPv6 для системних резолверів.
+  # Prefer IPv4 over broken IPv6 for system resolvers.
   environment.etc."gai.conf".text = ''
     precedence ::ffff:0:0/96  100
   '';
 
-  # PKI та SSL-сумісність для сторонніх бінарників і агентів.
+  # PKI and SSL compatibility for third-party binaries and agents.
   security.pki.useCompatibleBundle = true;
   environment.sessionVariables = {
     SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
@@ -53,7 +63,7 @@
     NIX_SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
   };
 
-  # Локалізація
+  # Localization
   time.timeZone = "Europe/Kyiv";
   i18n = {
     defaultLocale = "en_US.UTF-8";

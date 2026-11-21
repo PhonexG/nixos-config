@@ -1,52 +1,56 @@
 # Rclone bisync filters for Google Drive <-> ~/GDriveOffline
 
-# Системне та офісне сміття
+# System and office junk
 - **/.Trash/**
 - **/.DS_Store
 - **/Thumbs.db
 - **/desktop.ini
 - **/*.tmp
+- **/*.swp
+- **/*.swo
 - **/~$*
 - **/*~
 - **/.#*
 - **/.goutputstream-*
 
-# Тимчасові папки архіваторів (File Roller тощо) та завантажень
+# Temporary archive-manager folders (File Roller, etc.) and downloads
 - **/.fr-*/**
 - **/.fr-*
 - **/*.part
 - **/*.crdownload
 - **/*.filepart
 
-# Конфліктні та блокувальні файли rclone
+# Conflict and lock files from rclone
 - **/*.conflict*
 - **/*.lck
 
-# Системи контролю версій та IDE
+# Version control systems and IDEs
 - **/.git/**
 - **/.idea/**
 - **/.vscode/**
 
-# Nix & direnv / оточення
+# Nix & direnv / environment
 - **/.direnv/**
 - **/.devenv/**
 - **/result
 - **/result-*
 
-# .NET / C# / F# / VB (артефакти компіляції та бінарники)
+# .NET / C# / F# / VB (build artifacts and binaries)
 - **/bin/**
 - **/obj/**
 
 # Rust (Cargo)
 - **/target/**
 
-# Scala & Java (sbt, Metals, Bloop)
+# Scala, Java & Gradle (sbt, Metals, Bloop, Gradle)
 - **/.metals/**
 - **/.bloop/**
 - **/.bsp/**
+- **/.scala-build/**
+- **/.gradle/**
 - **/*.class
 
-# C / C++ (компіляція, бінарники, CMake)
+# C / C++ (build artifacts, binaries, CMake)
 - **/cmake-build-*/**
 - **/build/**
 - **/*.o
@@ -56,18 +60,26 @@
 - **/*.pdb
 - **/compile_commands.json
 
-# Python & оточення
+# Python & virtual environments
 - **/.venv/**
+- **/venv/**
 - **/env/**
 - **/__pycache__/**
 - **/*.pyc
 - **/.pytest_cache/**
 - **/.ruff_cache/**
 
-# Веб-залежності
+# Web dependencies, builds, and Flutter/Dart
 - **/node_modules/**
+- **/dist/**
+- **/.next/**
+- **/.dart_tool/**
 
-# Кеші додатків, браузерів та розпаковані бекапи
+# Local runs, CI logs, and build artifacts
+- **/.local-runs/**
+- **/.ci-logs/**
+
+# Application/browser caches and extracted backups
 - **/system-backup_*/**
 - **/.cache/**
 - **/Cache/**
@@ -76,3 +88,20 @@
 - **/ShaderCache/**
 - **/IndexedDB/**
 - **/Service Worker/**
+
+# Root and any-depth matches (patterns without **/ also cover the root)
+- .local-runs/**
+- node_modules/**
+- .venv/**
+- venv/**
+- __pycache__/**
+- target/**
+- dist/**
+- build/**
+- .next/**
+- .gradle/**
+- .cache/**
+- *.tmp
+- *.swp
+- *.swo
+- *.crdownload
