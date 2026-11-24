@@ -62,8 +62,12 @@ in
       After = [
         "graphical-session-pre.target"
         "graphical-session.target"
+        "pipewire-pulse.service"
       ];
-      PartOf = [ "graphical-session.target" ];
+      PartOf = [
+        "graphical-session.target"
+        "pipewire-pulse.service"
+      ];
       ConditionEnvironment = "WAYLAND_DISPLAY";
     };
     Service = {

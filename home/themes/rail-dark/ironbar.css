@@ -284,57 +284,119 @@ scale slider {
 
 /* Volume popup */
 .popup-volume {
-    min-width: 210px;
-    padding: 10px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 10px;
     border: 1px solid @border_subtle;
     background-color: @bg_surface;
 }
 
-.popup-volume .device-box,
-.popup-volume .app-box {
-    padding: 4px;
+.popup-volume .device-box {
+    min-width: 175px;
+    padding: 4px 2px;
 }
 
 .popup-volume .apps-box {
-    border-top: 1px solid @border_subtle;
-    padding-top: 8px;
+    border-left: 1px solid @border_subtle;
+    margin-left: 12px;
+    padding-left: 12px;
+    min-width: 220px;
 }
 
+.popup-volume .app-box {
+    background-color: @bg_base;
+    border: 1px solid @border_subtle;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+}
+
+.popup-volume .app-box:last-child {
+    margin-bottom: 0;
+}
+
+.popup-volume .app-box .title,
+.popup-volume .app-box > label {
+    font-size: 11px;
+    font-weight: bold;
+    color: @fg_primary;
+    margin-bottom: 2px;
+}
+
+/* Device selector dropdown — avoid double border */
 .popup-volume combobox,
-.popup-volume .device-selector,
+.popup-volume .device-selector {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 8px;
+}
+
 .popup-volume combobox button,
 .popup-volume .device-selector button {
     font-size: 11px;
-    min-height: 26px;
-    padding: 2px 8px;
+    min-height: 28px;
+    padding: 4px 10px;
     border-radius: 6px;
-    background-color: @bg_hover;
+    background-color: @bg_base;
     border: 1px solid @border_subtle;
     color: @fg_primary;
+}
+
+.popup-volume combobox button:hover,
+.popup-volume combobox button:focus,
+.popup-volume .device-selector button:hover,
+.popup-volume .device-selector button:focus {
+    background-color: @bg_hover;
+    border-color: @accent_primary;
 }
 
 .popup-volume combobox cellview {
     font-size: 11px;
 }
 
+.popup-volume combobox arrow {
+    color: @fg_muted;
+    min-width: 14px;
+    min-height: 14px;
+    margin-left: 6px;
+}
+
+/* Volume sliders — separate vertical (device) and horizontal (apps) */
 .popup-volume .slider,
 .popup-volume scale {
-    padding: 6px 0;
+    padding: 4px 0;
 }
 
 .popup-volume scale value {
     font-size: 11px;
     font-weight: bold;
-    color: @fg_primary;
+    color: @fg_muted;
     margin-bottom: 4px;
+}
+
+.popup-volume .device-box scale value {
+    color: @fg_primary;
+    font-size: 12px;
+    margin-bottom: 6px;
 }
 
 .popup-volume scale trough {
     background-color: @bg_hover;
     border-radius: 99px;
+}
+
+.popup-volume scale.vertical trough {
     min-width: 6px;
-    min-height: 100px;
+    min-height: 124px;
+}
+
+.popup-volume scale.horizontal trough {
+    min-width: 180px;
+    min-height: 6px;
+}
+
+.popup-volume .app-box scale trough {
+    background-color: @bg_surface;
 }
 
 .popup-volume scale highlight,
@@ -354,25 +416,48 @@ scale slider {
     margin: -4px;
 }
 
+.popup-volume scale slider:hover {
+    background-color: @accent_secondary;
+    border-color: @accent_secondary;
+}
+
+/* Mute buttons */
 .popup-volume .btn-mute {
     min-width: 32px;
-    min-height: 32px;
-    padding: 0;
-    margin: 4px 78px 0;
+    min-height: 30px;
+    padding: 0 8px;
+    margin: 6px 0 0 0;
     border-radius: 6px;
     background-color: @bg_hover;
     border: 1px solid @border_subtle;
-    font-size: 15px;
+    color: @fg_primary;
+    font-size: 14px;
 }
 
-.popup-volume .btn-mute:hover,
-.popup-volume .btn-mute:checked {
-    background-color: @accent_primary;
-    color: @bg_base;
+.popup-volume .app-box .btn-mute {
+    min-width: 28px;
+    min-height: 26px;
+    margin-top: 4px;
+    background-color: @bg_surface;
+    font-size: 13px;
+}
+
+.popup-volume .btn-mute:hover {
+    background-color: @bg_hover;
     border-color: @accent_primary;
+    color: @accent_primary;
 }
 
-.popup-volume .btn-mute:hover label,
+.popup-volume .btn-mute:hover label {
+    color: @accent_primary;
+}
+
+.popup-volume .btn-mute:checked {
+    background-color: @status_err;
+    border-color: @status_err;
+    color: @bg_base;
+}
+
 .popup-volume .btn-mute:checked label {
     color: @bg_base;
 }

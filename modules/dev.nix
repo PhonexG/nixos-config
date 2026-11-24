@@ -38,10 +38,29 @@
 
       # X11 fallback
       xorg.libX11
+      xorg.libXcomposite
       xorg.libXcursor
+      xorg.libXdamage
+      xorg.libXext
+      xorg.libXfixes
       xorg.libXi
       xorg.libXrandr
       xorg.libxcb
+
+      # Electron / Chromium GUI libraries
+      nspr
+      nss
+      atk
+      at-spi2-atk
+      at-spi2-core
+      cups
+      dbus
+      cairo
+      gtk3
+      pango
+      libgbm
+      libdrm
+      expat
 
       # Base system libraries
       fontconfig
