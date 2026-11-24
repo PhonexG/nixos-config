@@ -47,7 +47,6 @@ in
       AMDGPU_ABM_LEVEL_ON_BAT = 1;
 
       DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE = "bluetooth";
-      SCHED_POWERSAVE_ON_BAT = 1;
     };
   };
 
